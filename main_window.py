@@ -13,3 +13,11 @@ class MaimWindow(QtWidgets.QMainWindow, ui):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+        self.pushButton.clicked.connect(self.btnClicked)
+
+        # Этот метод описывает действи при нажатии кнопки
+
+    def btnClicked(self):
+        pass
+
+

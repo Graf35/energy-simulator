@@ -1,15 +1,11 @@
-
+import tablreader
+import pickle
+import pandas as pd
+from pathlib import Path
 
 class Steam_boiler():
     def __int__(self):
-        smoke_pump=False
-        current_smoke_pump=0
-        K5PC5CHSP=0
-        K5PC5CHPV = 0
-        K5PC5CHOP = 0
-        K5PC5CHMO = "M"
-        K5PCV5_task=0
-        K5PCV5=0
+
         K5T4=0
         K5P21=0
         K5T18_2=0
@@ -171,3 +167,48 @@ class Steam_boiler():
         K5HCV61 = 0
         K5HCV61_task = 0
         K5T12=0
+
+class smoke_pump():
+    def __init__(self, mode):
+        self.smoke_pump = tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "smoke_pump", mode)
+        self.current_smoke_pump = int(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "current_smoke_pump", mode))
+        self.K5PC5CHSP = int(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "K5PC5CHSP", mode))
+        self.K5PC5CHOP = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "K5PC5CHOP", mode))
+        self.K5PC5CHMO = tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "K5PC5CHMO", mode)
+        self.K5PC5CHOP_task=float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "K5PC5CHOP", mode))
+        self.speed=1.11
+    def automatic_adjustment(self, K5PC6CH, K5F3):
+        model = pickle.load(open(Path(Path.cwd(), 'models',"model", 'K5PC5HC.sav'), 'rb'))
+        entrance = {'K5PC6CH.OP': [K5PC6CH], 'K5F3.PV': [K5F3]}
+        table_entrance = pd.DataFrame(data=entrance)
+        self.K5PC5CHOP_task=model.predict(table_entrance)
+        if self.K5PC5CHOP_task>self.K5PC5CHOP:
+            self.open()
+        elif self.K5PC5CHOP_task<self.K5PC5CHOP:
+            self.close()
+
+    def mechanic_adjustment(self, K5PC5CHOP_task):
+        self.K5PC5CHOP_task=K5PC5CHOP_task #пробросить число от пользователя
+        if self.K5PC5CHOP_task>self.K5PC5CHOP:
+            self.open()
+        elif self.K5PC5CHOP_task<self.K5PC5CHOP:
+            self.close()
+
+    def open(self):
+        if self.K5PC5CHOP+self.speed>=self.K5PC5CHOP_task:
+            self.K5PC5CHOP=self.K5PC5CHOP_task
+        else:
+            self.K5PC5CHOP+=self.speed
+    def close(self):
+        if self.K5PC5CHOP-self.speed<=self.K5PC5CHOP_task:
+            self.K5PC5CHOP=self.K5PC5CHOP_task
+        else:
+            self.K5PC5CHOP-=self.speed
+
+class K5PCV5():
+    def __init__(self, mode):
+        self.K5PCV5_task = 0
+        self.K5PCV5 = 0
+        self.speed = 1.11
+
+

@@ -207,8 +207,26 @@ class smoke_pump():
 
 class K5PCV5():
     def __init__(self, mode):
-        self.K5PCV5_task = 0
-        self.K5PCV5 = 0
+        self.K5PCV5_task = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "K5PCV5_task", mode))
+        self.K5PCV5 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "K5PCV5", mode))
         self.speed = 1.11
+
+    def mechanic_adjustment(self, K5PCV5_task):
+        self.K5PC5CHOP_task=K5PCV5_task #пробросить число от пользователя
+        if self.K5PCV5_task>self.K5PCV5:
+            self.open()
+        elif self.K5PCV5_task<self.K5PCV5:
+            self.close()
+
+    def open(self):
+        if self.K5PCV5+self.speed>=self.K5PCV5_task:
+            self.K5PCV5=self.K5PCV5_task
+        else:
+            self.K5PCV5+=self.speed
+    def close(self):
+        if self.K5PCV5-self.speed<=self.K5PCV5_task:
+            self.K5PCV5=self.K5PCV5_task
+        else:
+            self.K5PCV5-=self.speed
 
 

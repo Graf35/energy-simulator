@@ -175,7 +175,8 @@ class Steam_boiler():
                  'K5PC6CH.OP': [self.K5PC6CH], 'K5T9_2.PV': [self.K5T9_2], 'K5PCV6I.PV': [self.K5PCV6],
                  'K5T10_1.PV': [self.K5T10_1],'K5T10_2.PV': [self.K5T10_2.PV]}
         table_entrance = pd.DataFrame(data=entrance)
-        self.K5T4 = model.predict(table_entrance)
+        self.K5T4 = float(model.predict(table_entrance)[0][0])
+
 
 
 class Smoke_pump():
@@ -191,7 +192,7 @@ class Smoke_pump():
         model = pickle.load(open(Path(Path.cwd(), 'models',"model", 'K5PC5HC.sav'), 'rb'))
         entrance = {'K5PC6CH.OP': [K5PC6CH], 'K5F3.PV': [K5F3]}
         table_entrance = pd.DataFrame(data=entrance)
-        self.K5PC5CHOP_task=model.predict(table_entrance)
+        self.K5PC5CHOP_task=float(model.predict(table_entrance)[0][0])
         if self.K5PC5CHOP_task>self.K5PC5CHOP:
             self.open()
         elif self.K5PC5CHOP_task<self.K5PC5CHOP:

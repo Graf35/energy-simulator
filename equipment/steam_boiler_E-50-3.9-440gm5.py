@@ -4,9 +4,8 @@ import pandas as pd
 from pathlib import Path
 
 class Steam_boiler():
-    def __int__(self):
-
-        K5T4=0
+    def __int__(self, mode):
+        self.K5T4=float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "K5PC5CHOP", mode))
         K5P21=0
         K5T18_2=0
         K5T7=0
@@ -167,8 +166,19 @@ class Steam_boiler():
         K5HCV61 = 0
         K5HCV61_task = 0
         K5T12=0
+        Ksmoke_pump=Smoke_pump(mode)
+        KK5PCV5=K5PCV5(mode)
 
-class smoke_pump():
+    def change_K5T4(self):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T4.sav'), 'rb'))
+        entrance = {'K5PC5CH.OP': [self.K5PC5CH], 'K5PCV5I.PV': [self.K5PCV5], 'K5T18_2.PV': [self.K5T18_2],
+                 'K5PC6CH.OP': [self.K5PC6CH], 'K5T9_2.PV': [self.K5T9_2], 'K5PCV6I.PV': [self.K5PCV6],
+                 'K5T10_1.PV': [self.K5T10_1],'K5T10_2.PV': [self.K5T10_2.PV]}
+        table_entrance = pd.DataFrame(data=entrance)
+        self.K5T4 = model.predict(table_entrance)
+
+
+class Smoke_pump():
     def __init__(self, mode):
         self.smoke_pump = tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "smoke_pump", mode)
         self.current_smoke_pump = int(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "current_smoke_pump", mode))

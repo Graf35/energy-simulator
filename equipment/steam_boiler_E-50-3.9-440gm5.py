@@ -2,11 +2,13 @@ import tablreader
 import pickle
 import pandas as pd
 from pathlib import Path
+from sklearn.preprocessing import PolynomialFeatures
+
 
 class Steam_boiler():
     def __int__(self, mode):
-        self.K5T4=float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "K5PC5CHOP", mode))
-        K5P21=0
+        self.K5T4=float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "K5T4", mode))
+        self.K5P21=float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "K5P21", mode))
         K5T18_2=0
         K5T7=0
         K5P19_1=0
@@ -176,6 +178,13 @@ class Steam_boiler():
                  'K5T10_1.PV': [self.K5T10_1],'K5T10_2.PV': [self.K5T10_2.PV]}
         table_entrance = pd.DataFrame(data=entrance)
         self.K5T4 = float(model.predict(table_entrance)[0][0])
+
+    def change_K5P21(self):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5P21.sav'), 'rb'))
+        entrance = {'K5P18_2.PV': [self.K5P21]}
+        table_entrance = pd.DataFrame(data=entrance)
+        quadratic = PolynomialFeatures(degree=2)
+        self.K5T4 = float(model.predict(quadratic.fit_transform(table_entrance))[0][0])
 
 
 

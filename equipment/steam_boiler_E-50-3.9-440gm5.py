@@ -10,7 +10,7 @@ class Steam_boiler():
         self.K5T4=float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "K5T4", mode))
         self.K5P21=float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "K5P21", mode))
         self.K5T18_2=float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "K5T18_2", mode))
-        K5T7=0
+        self.K5T7=float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "K5T7", mode))
         K5P19_1=0
         K5P19_2=0
         K5T8_1=0
@@ -193,6 +193,13 @@ class Steam_boiler():
         'K5T5_2.PV':[self.K5T5_2], 'K5T8_4.PV':[self.K5T8_4], 'K5T8_5.PV':[self.K5T8_5], 'K5T8_6.PV':[self.K5T8_6]}
         table_entrance = pd.DataFrame(data=entrance)
         self.K5T18_2 = float(model.predict(table_entrance)[0][0])
+
+    def change_K5T7(self):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T7.sav'), 'rb'))
+        entrance = {'K5T8_1.PV':[self.K5T8_1]}
+        table_entrance = pd.DataFrame(data=entrance)
+        quadratic = PolynomialFeatures(degree=2)
+        self.K5T7 = float(model.predict(quadratic.fit_transform(table_entrance))[0][0])
 
 
 

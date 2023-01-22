@@ -11,11 +11,11 @@ class Steam_boiler():
         self.K5P21=float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "K5P21", mode))
         self.K5T18_2=float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "K5T18_2", mode))
         self.K5T7=float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "K5T7", mode))
-        K5P19_1=0
-        K5P19_2=0
-        K5T8_1=0
-        K5T8_2 = 0
-        K5T8_3 = 0
+        self.K5P19_1=float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "K5P19_1", mode))
+        self.K5P19_2=float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "K5P19_2", mode))
+        self.K5T8_1=float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "K5T8_1", mode))
+        self.K5T8_2 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "K5T8_2", mode))
+        self.K5T8_3 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'),"объект", "K5T8_3", mode))
         K5P23=0
         K5P24=0
         K5P20=0
@@ -173,7 +173,7 @@ class Steam_boiler():
 
     def change_K5T4(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T4.sav'), 'rb'))
-        entrance = {'K5PC5CH.OP': [self.K5PC5CH], 'K5PCV5I.PV': [self.K5PCV5], 'K5T18_2.PV': [self.K5T18_2],
+        entrance = {'K5PC5CH.OP': [self.Ksmoke_pump.K5PC5CHOP], 'K5PCV5I.PV': [self.K5PCV5], 'K5T18_2.PV': [self.K5T18_2],
                  'K5PC6CH.OP': [self.K5PC6CH], 'K5T9_2.PV': [self.K5T9_2], 'K5PCV6I.PV': [self.K5PCV6],
                  'K5T10_1.PV': [self.K5T10_1],'K5T10_2.PV': [self.K5T10_2.PV]}
         table_entrance = pd.DataFrame(data=entrance)
@@ -200,6 +200,13 @@ class Steam_boiler():
         table_entrance = pd.DataFrame(data=entrance)
         quadratic = PolynomialFeatures(degree=2)
         self.K5T7 = float(model.predict(quadratic.fit_transform(table_entrance))[0][0])
+
+    def change_K5P19_1(self):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5P19_1.sav'), 'rb'))
+        entrance = {'K5PC5CH.OP':[self.Ksmoke_pump.K5PC5CHOP], 'K5PC6CH.OP':[self.K5PC6CH]}
+        table_entrance = pd.DataFrame(data=entrance)
+        quadratic = PolynomialFeatures(degree=2)
+        self.K5P19_1 = float(model.predict(quadratic.fit_transform(table_entrance))[0][0])
 
 
 

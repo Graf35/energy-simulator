@@ -168,7 +168,7 @@ class Steam_boiler():
         K5HCV61 = 0
         K5HCV61_task = 0
         K5T12=0
-        Ksmoke_pump=Smoke_pump(mode)
+        self.Ksmoke_pump=Smoke_pump(mode)
         KK5PCV5=K5PCV5(mode)
 
     def change_K5T4(self):

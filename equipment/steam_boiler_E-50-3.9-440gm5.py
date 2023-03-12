@@ -242,6 +242,7 @@ class Steam_boiler():
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5P23.sav'), 'rb'))
         entrance = {'K5P6.PV':[self.K5P6], 'K5PCV6I.PV':[self.K5PCV6I], 'K5PC6CH.OP': [self.K5PC6CH]}
         table_entrance = pd.DataFrame(data=entrance)
+        quadratic = PolynomialFeatures(degree=2)
         self.K5P23 = float(model.predict(quadratic.fit_transform(table_entrance))[0][0])
 
     def change_K5P24(self):

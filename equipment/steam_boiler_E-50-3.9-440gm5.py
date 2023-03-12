@@ -21,8 +21,8 @@ class Steam_boiler():
         self.K5P20 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5TP20", mode))
         self.K5P18_1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P18_1", mode))
         self.K5P18_2 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P18_2", mode))
-        K5T5_2 = 0
-        K5T5_1 = 0
+        self.K5T5_2 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T5_2", mode))
+        self.K5T5_1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T5_1", mode))
         K5T18_1 = 0
         K5T9_1 = 0
         K5T9_2 = 0

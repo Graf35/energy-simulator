@@ -276,6 +276,12 @@ class Steam_boiler():
         table_entrance = pd.DataFrame(data=entrance)
         self.K5T5_1 = float(model.predict(table_entrance)[0][0])
 
+    def change_K5T5_2(self):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T5_2.sav'), 'rb'))
+        entrance = {'K0P125.PV': [self.K0P125], 'K5F3.PV': [self.K5F3]}
+        table_entrance = pd.DataFrame(data=entrance)
+        self.K5T5_2 = float(model.predict(table_entrance)[0][0])
+
 
 
 class Smoke_pump():

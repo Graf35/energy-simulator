@@ -26,8 +26,8 @@ class Steam_boiler():
         self.K5T18_1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T18_1", mode))
         self.K5T9_2 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T9_2", mode))
         self.K5T9_1 = self.K5T9_2
-        K5T10_1 = 0
-        K5T10_2 = 0
+        self.K5T10_1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T10_1", mode))
+        self.K5T10_2 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T10_2", mode))
         K5T8_4 = 0
         K5T8_5 = 0
         K5T8_6 = 0
@@ -290,12 +290,28 @@ class Steam_boiler():
         self.K5T18_1 = float(model.predict(table_entrance)[0][0])
 
     def change_K5T9_2(self):
-        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5P20.sav'), 'rb'))
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5P9_2.sav'), 'rb'))
         entrance = {'K5T7.PV': [self.K5T7]}
         table_entrance = pd.DataFrame(data=entrance)
         quadratic = PolynomialFeatures(degree=3)
         self.K5T9_2 = float(model.predict(quadratic.fit_transform(table_entrance))[0][0])
         self.K5T9_1=self.K5T9_2
+
+    def change_K5T10_1(self):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T10_1.sav'), 'rb'))
+        entrance = {'K5PC5CH.OP': [self.Ksmoke_pump.K5PC5CHOP], 'K5T4.PV': [self.K5T4],
+                    'K5T18_2.PV': [self.K5T18_2], 'K5PC6CH.OP': [self.K5PC6CH],
+                    'K5T8_3.PV': [self.K5T8_3]}
+        table_entrance = pd.DataFrame(data=entrance)
+        self.K5T10_1 = float(model.predict(table_entrance)[0][0])
+
+    def change_K5T10_2(self):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T10_2.sav'), 'rb'))
+        entrance = {'K5PC5CH.OP': [self.Ksmoke_pump.K5PC5CHOP], 'K5T4.PV': [self.K5T4],
+                    'K5T18_2.PV': [self.K5T18_2], 'K5PC6CH.OP': [self.K5PC6CH],
+                    'K5T8_3.PV': [self.K5T8_3]}
+        table_entrance = pd.DataFrame(data=entrance)
+        self.K5T10_2 = float(model.predict(table_entrance)[0][0])
 
 class Smoke_pump():
     def __init__(self, mode):

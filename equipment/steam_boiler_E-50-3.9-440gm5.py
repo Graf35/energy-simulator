@@ -31,19 +31,6 @@ class Steam_boiler():
         self.K5T8_4 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T8_4", mode))
         self.K5T8_5 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T8_5", mode))
         self.K5T8_6 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T8_6", mode))
-        K5HCV63_task = 0
-        K5HCV62_task = 0
-        K5HCV63 = 0
-        K5HCV62 = 0
-        K5PCV6_task = 0
-        K5PCV6 = 0
-        K5P6 = 0
-        current_fan = 0
-        fan = False
-        K5PC6CHSP = 0
-        K5PC6CHPV = 0
-        K5PC6CHOP = 0
-        K5PC6CHMO = "M"
         K5PS14_1 = 0
         K5PS14_2 = 0
         K5V4 = False
@@ -173,6 +160,7 @@ class Steam_boiler():
         self.KK5PCV5 = K5PCV5(mode)
         self.KK5HCV62 = K5HCV62(mode)
         self.KK5HCV63 = K5HCV63(mode)
+        self.fun=Fan(mode)
 
     def change_K5T4(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T4.sav'), 'rb'))
@@ -457,3 +445,42 @@ class K5HCV62():
             self.K5HCV62 = self.K5HCV62_task
         else:
             self.K5HCV62 -= self.speed
+
+class Fan():
+    def __init__(self, mode):
+        self.fun = tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "fun", mode)
+        self.current_fun = int(
+            tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "current_fun", mode))
+        self.K5PCV6CHSP = int(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV6CHSP", mode))
+        self.K5PCV6CHOP = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV6CHOP", mode))
+        self.K5PCV6CHMO = tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV6CHMO", mode)
+        self.K5PCV6CHOP_task = float(
+            tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV65CHOP", mode))
+        self.speed = 1.11
+
+    def automatic_adjustment(self, K5PCV6CH, K5F3):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5PCV6HC.sav'), 'rb'))
+        entrance = {'K5PC6CH.OP': [K5PCV6CH], 'K5F3.PV': [K5F3]}
+        table_entrance = pd.DataFrame(data=entrance)
+        self.K5PCV6CHOP_task = float(model.predict(table_entrance)[0][0])
+        if self.K5PCV6CHOP_task > self.K5PCV6CHOP:
+            self.open()
+        elif self.K5PCV6CHOP_task < self.K5PCV6CHOP:
+            self.close()
+
+    def mechanic_adjustment(self, K5PCV6CHOP_task):
+        self.K5PCV6CHOP_task = K5PCV6CHOP_task  # пробросить число от пользователя
+        if self.K5PCV6CHOP_task > self.K5PCV6CHOP:
+            self.open()
+        elif self.K5PCV6CHOP_task < self.K5PCV6CHOP:
+            self.close()
+    def open(self):
+        if self.K5PCV6CHOP + self.speed >= self.K5PCV6CHOP_task:
+            self.K5PCV6CHOP = self.K5PCV6CHOP_task
+        else:
+            self.K5PCV6CHOP += self.speed
+    def close(self):
+        if self.K5PCV6CHOP - self.speed <= self.K5PCV6CHOP_task:
+            self.K5PCV6CHOP = self.K5PCV6CHOP_task
+        else:
+            self.K5PCV6CHOP -= self.speed

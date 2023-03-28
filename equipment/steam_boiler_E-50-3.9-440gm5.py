@@ -33,7 +33,7 @@ class Steam_boiler():
         self.K5T8_6 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T8_6", mode))
         self.K5PS14_1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PS14_1", mode))
         self.K5PS14_2 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PS14_2", mode))
-        K5V4 = False
+        self.K5V4 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5V4", mode))
         K5L1_1_connection = True
         K5L1_1 = -350
         K5L1_1_select = True
@@ -338,6 +338,13 @@ class Steam_boiler():
         entrance = {'K5P10.PV': [self.K5P10.PV]}
         table_entrance = pd.DataFrame(data=entrance)
         self.K5PSV14_2 = float(model.predict(table_entrance)[0][0])
+
+    def change_K5V4(self):
+        if self.K5V4==True:
+            self.K5V4=False
+        else:
+            self.K5V4=True
+
 
 class Smoke_pump():
     def __init__(self, mode):

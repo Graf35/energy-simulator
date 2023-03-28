@@ -39,3 +39,19 @@ K5PC5CHMO ;M;M;M;A;A;A
 K5PS14_1;0;0;4;4.016775;4.081425;4.098394
 K5PS14_2;0;0;4;4.137581;4.19745;4.209
 K5V4;False;False;False;False;False;False
+K5L1_1_connection;False;False;True;True;True;True
+K5L1_1;-350;-350;0;11.31637;9.373219;13.71234
+K5L1_1_select;False;False;True;True;True;True
+K5L1_2_connection;False;False;True;True;True;True
+K5L1_2;-350;-350;0;2.842875;1.472625;5.106938
+K5L1_2_select;False;False;False;False;False;False
+5L1_3_connection ;False;False;True;True;True;True
+K5L1_3;-350;-350;0;0.7973437;-1.775813;1.187156
+K5L1_3_select;False;False;False;False;False;False
+K5L1_4_connection;False;False;True;True;True;True
+K5L1_4;-350;-350;313;313.8109;313.0332;313.5431
+K5L1_4_select;False;False;False;False;False;False
+K5P5_1;False;False;True;True;True;True
+k5P5_1_select;0;0;-40;-38.43516;-40.80469;-37.88203
+K5P5_2;False;False;False;False;False;False
+k5P5_2_select;0;0;-40;-38.71953;-43.36016;-33.68906

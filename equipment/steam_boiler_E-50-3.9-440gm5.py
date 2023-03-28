@@ -34,22 +34,22 @@ class Steam_boiler():
         self.K5PS14_1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PS14_1", mode))
         self.K5PS14_2 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PS14_2", mode))
         self.K5V4 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5V4", mode))
-        K5L1_1_connection = True
-        K5L1_1 = -350
-        K5L1_1_select = True
-        K5L1_2_connection = False
-        K5L1_2 = -350
-        K5L1_2_select = False
-        K5L1_3_connection = False
-        K5L1_3 = -350
-        K5L1_3_select = False
-        K5L1_4_connection = False
-        K5L1_4 = -350
-        K5L1_4_select = False
-        K5P5_1 = 0
-        k5P5_1_select = True
-        K5P5_2 = 0
-        k5P5_2_select = False
+        self.K5L1_1_connection =float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_1_connection", mode))
+        self.K5L1_1 =float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_1", mode))
+        self.K5L1_1_select =float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_1_select", mode))
+        self.K5L1_2_connection =float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_2_connection", mode))
+        self.K5L1_2 =float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_2", mode))
+        self.K5L1_2_select =float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_2_select", mode))
+        self.K5L1_3_connection =float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_3_connection", mode))
+        self.K5L1_3= float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_3", mode))
+        self.K5L1_3_select =float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_3_select", mode))
+        self.K5L1_4_connection =float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_4_connection", mode))
+        self.K5L1_4 =float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_4", mode))
+        self.K5L1_4_select =float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_4_select", mode))
+        self.K5P5_1 =float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P5_1", mode))
+        self.k5P5_1_select =float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "k5P5_1_select", mode))
+        self.K5P5_2 =float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P5_2", mode))
+        self.K5P5_2_select =float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P5_2_select", mode))
         purge_proved = False
         K5Q3 = 0
         K5T17 = 0
@@ -335,7 +335,7 @@ class Steam_boiler():
 
     def change_K5PS14_2(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5PS14_2.sav'), 'rb'))
-        entrance = {'K5P10.PV': [self.K5P10.PV]}
+        entrance = {'K5P10.PV': [self.K5P10]}
         table_entrance = pd.DataFrame(data=entrance)
         self.K5PSV14_2 = float(model.predict(table_entrance)[0][0])
 
@@ -344,6 +344,86 @@ class Steam_boiler():
             self.K5V4=False
         else:
             self.K5V4=True
+
+    def change_K5L1_1_connection(self):
+        if self.K5L1_1_connection==True:
+            self.K5L1_1_connection=False
+        else:
+            self.K5L1_1_connection=True
+
+    def change_K5L1_1(self):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5L1_1.sav'), 'rb'))
+        entrance = {'K5F5.PV': [self.K5F5], 'K5F6X.PV': [self.K5F6X],}
+        table_entrance = pd.DataFrame(data=entrance)
+        self.K5L1_1 = float(model.predict(table_entrance)[0][0])
+
+    def change_K5L1_1_select(self):
+        self.K5L1_1_select=True
+        self.K5L1_2_select = False
+        self.K5L1_3_select = False
+        self.K5L1_4_select = False
+
+    def change_K5L1_2_connection(self):
+        if self.K5L1_2_connection == True:
+            self.K5L1_2_connection = False
+        else:
+            self.K5L1_2_connection = True
+
+    def change_K5L1_2(self):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5L1_2.sav'), 'rb'))
+        entrance = {'K5F5.PV': [self.K5F5], 'K5F6X.PV': [self.K5F6X], }
+        table_entrance = pd.DataFrame(data=entrance)
+        self.K5L1_2 = float(model.predict(table_entrance)[0][0])
+
+    def change_K5L1_2_select(self):
+        self.K5L1_1_select = False
+        self.K5L1_2_select = True
+        self.K5L1_3_select = False
+        self.K5L1_4_select = False
+
+    def change_K5L1_3_connection(self):
+        if self.K5L1_3_connection == True:
+            self.K5L1_3_connection = False
+        else:
+            self.K5L1_3_connection = True
+
+    def change_K5L1_3(self):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5L1_3.sav'), 'rb'))
+        entrance = {'K5F5.PV': [self.K5F5], 'K5F6X.PV': [self.K5F6X], }
+        table_entrance = pd.DataFrame(data=entrance)
+        self.K5L1_3 = float(model.predict(table_entrance)[0][0])
+
+    def change_K5L1_3_select(self):
+        self.K5L1_1_select = False
+        self.K5L1_2_select = False
+        self.K5L1_3_select = True
+        self.K5L1_4_select = False
+
+    def change_K5L1_4_connection(self):
+        if self.K5L1_4_connection == True:
+            self.K5L1_4_connection = False
+        else:
+            self.K5L1_4_connection = True
+
+    def change_K5L1_4(self):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5L1_4.sav'), 'rb'))
+        entrance = {'K5F5.PV': [self.K5F5], 'K5F6X.PV': [self.K5F6X], }
+        table_entrance = pd.DataFrame(data=entrance)
+        self.K5L1_4 = float(model.predict(table_entrance)[0][0])
+
+    def change_K5L1_4_select(self):
+        self.K5L1_1_select = False
+        self.K5L1_2_select = False
+        self.K5L1_3_select = False
+        self.K5L1_4_select = True
+
+    def change_K5P5_1_select(self):
+        self.K5P5_1_select = True
+        self.K5P5_2_select = False
+
+    def change_K5P5_2_select(self):
+        self.K5P5_1_select = False
+        self.K5P5_2_select = True
 
 
 class Smoke_pump():

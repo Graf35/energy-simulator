@@ -425,6 +425,8 @@ class Steam_boiler():
         self.K5P5_1_select = False
         self.K5P5_2_select = True
 
+# TODO:Переобучит сеть в K5P5 на зависимость входа от выхода. Если есть отлисчие от текущего изменять разряжение
+
 
 class Smoke_pump():
     def __init__(self, mode):

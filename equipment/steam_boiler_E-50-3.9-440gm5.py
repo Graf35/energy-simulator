@@ -62,8 +62,8 @@ class Steam_boiler():
         self.K5V3 = False
         self.K5T6 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T6", mode))
         self.K5P10 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P10", mode))
-        K5T15 = 0
-        K5T16 = 0
+        self.K5T15 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T15", mode))
+        self.K5T16 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T16", mode))
         K5P8 = 0
         K5T2_1 = 0
         K5T2_1_select = True
@@ -468,6 +468,20 @@ class Steam_boiler():
         entrance = {'K5PS14_2.PV':[self.K5PS14_2]}
         table_entrance = pd.DataFrame(data=entrance)
         self.K5P10= float(model.predict(table_entrance)[0][0])
+
+    def change_K5T16(self):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T16.sav'), 'rb'))
+        entrance = {'K0P102_1.PV':[self.K0P102_1.PV]}
+        table_entrance = pd.DataFrame(data=entrance)
+        self.K5T16= float(model.predict(table_entrance)[0][0])
+
+    def change_K5T17(self):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T17.sav'), 'rb'))
+        entrance = {'K5PS14_2.PV':[self.K5PS14_2], 'K5T6.PV':[self.K5T6], 'K5P10.PV':[self.K5P10], 'K5LCV1I.PV':[self.K5LCV1I],
+                    'K5F5.PV':[self.K5F5],'K5T14.PV':[self.K5T14], 'K5F6X.PV':[self.K5F6X],'K5TCV2I.PV':[self.K5TCV2I],
+                    'K5T15.PV':[self.K5T15],'K5P8.PV':[self.K5P8]}
+        table_entrance = pd.DataFrame(data=entrance)
+        self.K5T17= float(model.predict(table_entrance)[0][0])
 
 
 class Smoke_pump():

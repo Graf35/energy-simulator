@@ -69,12 +69,6 @@ class Steam_boiler():
         self.K5T2_1_select = True
         self.K5T2_2 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T2_2", mode))
         self.K5T2_2_select = False
-        K5TCV2 = 0
-        K5TCV2_task = 0
-        K5TCV2_apass = False
-        K5TCV2_control = "M"
-        K5LCV2 = 0
-        K5LCV2_apass = False
         K5TCV1_1 = 0
         K5TCV1_1_task = 0
         K5TCV1_1_apass = False
@@ -161,6 +155,7 @@ class Steam_boiler():
         self.KK5HCV62 = K5HCV62(mode)
         self.KK5HCV63 = K5HCV63(mode)
         self.fun=Fan(mode)
+        self.KK5TCV2=K5TCV2(mode)
 
     def change_K5T4(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T4.sav'), 'rb'))
@@ -659,3 +654,29 @@ class Fan():
             self.K5PCV6CHOP = self.K5PCV6CHOP_task
         else:
             self.K5PCV6CHOP -= self.speed
+
+class K5TCV2():
+    def __init__(self, mode):
+        self.K5TCV2_task = float(
+            tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5TCV2", mode))
+        self.K5TCV2 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5TCV2", mode))
+        self.speed = 1.11
+
+    def mechanic_adjustment(self, K5TCV2_task):
+        self.K5TCV2_task = K5TCV2_task  # пробросить число от пользователя
+        if self.K5TCV2_task > self.K5TCV2:
+            self.open()
+        elif self.K5TCV2_task < self.K5TCV2:
+            self.close()
+
+    def open(self):
+        if self.K5TCV2 + self.speed >= self.K5PCV5_task:
+            self.K5TCV2 = self.K5TCV2_task
+        else:
+            self.K5TCV2 += self.speed
+
+    def close(self):
+        if self.K5TCV2 - self.speed <= self.K5TCV2_task:
+            self.K5TCV2 = self.K5TCV2_task
+        else:
+            self.K5TCV2 -= self.speed

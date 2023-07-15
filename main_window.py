@@ -4,6 +4,9 @@ from PyQt5.QtWidgets import  QFileDialog
 from PyQt5.QtGui import QPixmap
 from PyQt5 import  uic
 import threading
+import test_api
+import sys
+import asyncio
 
 #Определяем имяи путь до файлас формой окна.
 ui=uic.loadUiType("interface/main_window.ui")[0]
@@ -18,6 +21,15 @@ class MaimWindow(QtWidgets.QMainWindow, ui):
         # Этот метод описывает действи при нажатии кнопки
 
     def btnClicked(self):
-        pass
+        self.test= test_api.Testing_window()
+        asyncio.run(self.show_window())
+
+
+    async def show_window(self):
+        self.test.show()
+
+
+
+
 
 

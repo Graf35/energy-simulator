@@ -1,9 +1,11 @@
 # Импортируем модуль Window. Он необходим для создания графического окна
 import main_window
+import test_api
 #Импортируем PyQt5 для работы с графикой
 from PyQt5 import QtWidgets
 #Модуль sys обеспечивает доступ к некоторым переменным и функциям, взаимодействующим с интерпретатором python.
 import sys
+
 
 def main():
     app = QtWidgets.QApplication(sys.argv)  # Новый экземпляр QApplication

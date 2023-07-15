@@ -9,8 +9,6 @@ import os
 from equipment.steam_boiler_E5039440gm5 import Steam_boiler
 from PyQt5.QtWidgets import QApplication, QMainWindow
 import asyncio
-
-
 from time import sleep
 
 #Определяем имяи путь до файлас формой окна.
@@ -22,13 +20,14 @@ class Testing_window(QtWidgets.QMainWindow, ui):
         super().__init__()
         self.setupUi(self)
         self.management_button.clicked.connect(self.management)
-        self.start_botton.clicked.connect(self.start)
-        self.work_deman = threading.Thread(target=self.work, daemon=False)
         self.bolier = Steam_boiler('Работа 20Т')
+        self.work_deman = threading.Thread(target=self.work, daemon=True)
+        self.work_deman.start()
+        self.updater_deman = threading.Thread(target=self.updater, daemon=True)
+        self.updater_deman.start()
         self.power_supply_node()
 
-    def start(self):
-        self.work_deman.start()
+
 
     def steam_cooler(self):
         self.Legend_1.setText("text2")
@@ -62,9 +61,10 @@ class Testing_window(QtWidgets.QMainWindow, ui):
         self.value_3.setText(str(self.bolier.K5F5))
         self.value_4.setText(str(self.bolier.K5LCV1))
 
+
     def work(self):
-        #flag = True
-        #while flag == True:
+        while True:
             self.bolier.change_K5F5()
             self.updater()
-            # sleep(5)
+            sleep(2)
+

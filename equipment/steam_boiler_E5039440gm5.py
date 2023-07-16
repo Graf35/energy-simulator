@@ -3,9 +3,22 @@ import pickle
 import pandas as pd
 from pathlib import Path
 from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import Ridge
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import MultiTaskLassoCV
+from sklearn.linear_model import Ridge
+import seaborn as sns
+from scipy.stats import norm
+from scipy import stats
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+from sklearn import datasets, linear_model
+from sklearn.model_selection import cross_val_score
 
 
 class Steam_boiler():
+
     def __init__(self, mode):
         self.K5T4 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T4", mode))
         self.K5P21 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P21", mode))
@@ -101,13 +114,13 @@ class Steam_boiler():
         K5P4_2_select = True
         K5V28 = False
         K5HCV53 = False
-        K5F3 = 0
+        self.K5F3 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5F3", mode))
         K5T20 = 0
         K5P110 = 63
-        K5PCV4 = 0
+        self.K5PCV4 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV4", mode))
         K5PCV4_task = 0
         K5PCV4_apass = False
-        K5PCV4_control = "M"
+        K5PCV4_mode = "M"
         K5P23 = 0
         K5P24 = 0
         K5Q3 = 0
@@ -150,7 +163,12 @@ class Steam_boiler():
         # self.fun=Fan(mode)
         # self.KK5TCV2=K5TCV2(mode)
         self.KK5LCV1 = K5LCV1_control(self.K5LCV1)
+        self.KK5PCV4 = K5PCV4_control(self.K5PCV4)
         # self.KK5TCV1_1 = K5TCV1_1(mode)
+        self.K5F6x_excitement=0
+        self.K5F5_excitement=0
+        self.K5F3_excitement=0
+        self.K5L1_1_excitement=0
 
     def change_K5T4(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T4.sav'), 'rb'))
@@ -343,9 +361,10 @@ class Steam_boiler():
 
     def change_K5L1_1(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5L1_1.sav'), 'rb'))
-        entrance = {'K5F5.PV': [self.K5F5], 'K5F6X.PV': [self.K5F6X],}
+        entrance = {'K5F6X.PV': [self.K5F6x]}
         table_entrance = pd.DataFrame(data=entrance)
-        self.K5L1_1 = float(model.predict(table_entrance)[0][0])
+        out=(float(model.predict(table_entrance)[0][0]))
+        return out
 
     def change_K5L1_1_select(self):
         self.K5L1_1_select=True
@@ -361,7 +380,7 @@ class Steam_boiler():
 
     def change_K5L1_2(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5L1_2.sav'), 'rb'))
-        entrance = {'K5F5.PV': [self.K5F5], 'K5F6X.PV': [self.K5F6X], }
+        entrance = {'K5F5.PV': [self.K5F5], 'K5F6X.PV': [self.K5F6x], }
         table_entrance = pd.DataFrame(data=entrance)
         self.K5L1_2 = float(model.predict(table_entrance)[0][0])
 
@@ -496,7 +515,16 @@ class Steam_boiler():
         entrance = {'K5LCV1I':[self.K5LCV1]}
         table_entrance = pd.DataFrame(data=entrance)
         quadratic = PolynomialFeatures(degree=2)
-        self.K5F5= float(model.predict(quadratic.fit_transform(table_entrance))[0][0])
+        self.K5F5= float(model.predict(quadratic.fit_transform(table_entrance))[0][0])+self.K5F5_excitement
+
+    def change_K5F3(self):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5F3.sav'), 'rb'))
+        entrance = {'K5PCV4I.PV':[self.K5PCV4]}
+        table_entrance = pd.DataFrame(data=entrance)
+        self.K5F3= float(model.predict(table_entrance)[0][0])+self.K5F3_excitement
+
+    def change_K5F6x(self):
+        self.K5F6x=self.K5F3/100+self.K5F6x_excitement
 
 
 class Smoke_pump():
@@ -735,3 +763,30 @@ class K5LCV1_control():
             self.K5LCV1 = self.K5LCV1_task
         else:
             self.K5LCV1 -= self.speed
+
+class K5PCV4_control():
+    def __init__(self, K5PCV4):
+        self.K5PCV4_task = K5PCV4
+        self.K5PCV4 = K5PCV4
+        self.speed = 1.11
+
+    def mechanic_adjustment(self, K5PCV4_task = -1):
+        if K5PCV4_task!= -1:
+            self.K5PCV4_task = K5PCV4_task  # пробросить число от пользователя
+        if self.K5PCV4_task > self.K5PCV4:
+            self.open()
+        elif self.K5PCV4_task < self.K5PCV4:
+            self.close()
+        return self.K5PCV4
+
+    def open(self):
+        if self.K5PCV4 + self.speed >= self.K5PCV4_task:
+            self.K5PCV4 = self.K5PCV4_task
+        else:
+            self.K5PCV4 += self.speed
+
+    def close(self):
+        if self.K5PCV4 - self.speed <= self.K5PCV4_task:
+            self.K5PCV4 = self.K5PCV4_task
+        else:
+            self.K5PCV4 -= self.speed

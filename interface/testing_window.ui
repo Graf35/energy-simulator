@@ -217,6 +217,9 @@ p, li { white-space: pre-wrap; }
             <property name="text">
              <string>Применить</string>
             </property>
+            <property name="shortcut">
+             <string>Space</string>
+            </property>
            </widget>
           </item>
          </layout>

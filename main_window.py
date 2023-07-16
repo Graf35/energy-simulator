@@ -21,8 +21,11 @@ class MaimWindow(QtWidgets.QMainWindow, ui):
         # Этот метод описывает действи при нажатии кнопки
 
     def btnClicked(self):
-        self.test= test_api.Testing_window()
-        asyncio.run(self.show_window())
+        try:
+            self.test= test_api.Testing_window(self.comboBox_2.currentText())
+            asyncio.run(self.show_window())
+        except:
+            pass
 
 
     async def show_window(self):

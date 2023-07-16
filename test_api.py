@@ -27,8 +27,6 @@ class Testing_window(QtWidgets.QMainWindow, ui):
         self.updater_deman.start()
         self.power_supply_node()
 
-
-
     def steam_cooler(self):
         self.Legend_1.setText("text2")
 
@@ -53,7 +51,8 @@ class Testing_window(QtWidgets.QMainWindow, ui):
         parametr = self.management_params_1.currentText()
         task = self.management_task_1.toPlainText()
         self.management_task_1.clear()
-        setattr(self.bolier, parametr, task)
+        self.bolier.K5LCV1=self.bolier.KK5LCV1.mechanic_adjustment(float(task))
+        # setattr(self.bolier, parametr, task)
 
     def updater(self):
         self.value_1.setText(str(self.bolier.K5F6x))
@@ -65,6 +64,7 @@ class Testing_window(QtWidgets.QMainWindow, ui):
     def work(self):
         while True:
             self.bolier.change_K5F5()
+            self.bolier.K5LCV1 = self.bolier.KK5LCV1.mechanic_adjustment()
             self.updater()
             sleep(2)
 

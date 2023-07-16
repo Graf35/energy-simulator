@@ -149,7 +149,7 @@ class Steam_boiler():
         # self.KK5HCV63 = K5HCV63(mode)
         # self.fun=Fan(mode)
         # self.KK5TCV2=K5TCV2(mode)
-        # self.KK5TCV1 = K5TCV1(mode)
+        self.KK5LCV1 = K5LCV1_control(self.K5LCV1)
         # self.KK5TCV1_1 = K5TCV1_1(mode)
 
     def change_K5T4(self):
@@ -683,54 +683,55 @@ class K5TCV2():
         else:
             self.K5TCV2 -= self.speed
 
-class K5TCV1_1():
+class K5lCV1_1():
     def __init__(self, mode):
-        self.K5TCV1_1_task = float(
-            tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5TCV1_1", mode))
-        self.K5TCV1_1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5TCV1_1", mode))
+        self.K5LCV1_1_task = float(
+            tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5LCV1_1", mode))
+        self.K5LCV1_1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5LCV1_1", mode))
         self.speed = 1.11
 
-    def mechanic_adjustment(self, K5TCV1_1_task):
-        self.K5TCV1_1_task = K5TCV1_1_task  # пробросить число от пользователя
-        if self.K5TCV1_1_task > self.K5TCV1_1:
+    def mechanic_adjustment(self, K5LCV1_1_task):
+        self.K5LCV1_1_task = K5LCV1_1_task  # пробросить число от пользователя
+        if self.K5LCV1_1_task > self.K5LCV1_1:
             self.open()
-        elif self.K5TCV1_1_task < self.K5TCV1_1:
+        elif self.K5LCV1_1_task < self.K5LCV1_1:
             self.close()
 
     def open(self):
-        if self.K5TCV1_1 + self.speed >= self.K5TCV1_1_task:
-            self.K5TCV1_1 = self.K5TCV1_1_task
+        if self.K5LCV1_1 + self.speed >= self.K5LCV1_1_task:
+            self.K5LCV1_1 = self.K5LCV1_1_task
         else:
-            self.K5TCV1_1 += self.speed
+            self.K5LCV1_1 += self.speed
 
     def close(self):
-        if self.K5TCV1_1 - self.speed <= self.K5TCV1_1_task:
-            self.K5TCV1_1 = self.K5TCV1_1_task
+        if self.K5LCV1_1 - self.speed <= self.K5LCV1_1_task:
+            self.K5LCV1_1 = self.K5LCV1_1_task
         else:
-            self.K5TCV1_1 -= self.speed
+            self.K5LCV1_1 -= self.speed
 
-class K5TCV1():
-    def __init__(self, mode):
-        self.K5TCV1_task = float(
-            tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5TCV1", mode))
-        self.K5TCV1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5TCV1", mode))
+class K5LCV1_control():
+    def __init__(self, K5LCV1):
+        self.K5LCV1_task = K5LCV1
+        self.K5LCV1 = K5LCV1
         self.speed = 1.11
 
-    def mechanic_adjustment(self, K5TCV1_task):
-        self.K5TCV1_task = K5TCV1_task  # пробросить число от пользователя
-        if self.K5TCV1_task > self.K5TCV1:
+    def mechanic_adjustment(self, K5LCV1_task = -1):
+        if K5LCV1_task!= -1:
+            self.K5LCV1_task = K5LCV1_task  # пробросить число от пользователя
+        if self.K5LCV1_task > self.K5LCV1:
             self.open()
-        elif self.K5TCV1_task < self.K5TCV1:
+        elif self.K5LCV1_task < self.K5LCV1:
             self.close()
+        return self.K5LCV1
 
     def open(self):
-        if self.K5TCV1 + self.speed >= self.K5TCV1_task:
-            self.K5TCV1 = self.K5TCV1_task
+        if self.K5LCV1 + self.speed >= self.K5LCV1_task:
+            self.K5LCV1 = self.K5LCV1_task
         else:
-            self.K5TCV1 += self.speed
+            self.K5LCV1 += self.speed
 
     def close(self):
-        if self.K5TCV1 - self.speed <= self.K5TCV1_task:
-            self.K5TCV1 = self.K5TCV1_task
+        if self.K5LCV1 - self.speed <= self.K5LCV1_task:
+            self.K5LCV1 = self.K5LCV1_task
         else:
-            self.K5TCV1 -= self.speed
+            self.K5LCV1 -= self.speed

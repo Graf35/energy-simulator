@@ -71,13 +71,13 @@ class Testing_window(QtWidgets.QMainWindow, ui):
         task = self.management_task_1.toPlainText()
         self.management_task_1.clear()
         if task!="":
-            self.bolier.K5LCV1=self.bolier.KK5LCV1.mechanic_adjustment(float(task))
+            self.bolier.K5LCV1=self.bolier.KK5LCV1.adjustment(float(task))
         self.management_2()
     def management_2(self):
         task = self.management_task_2.toPlainText()
         self.management_task_2.clear()
         if task!="":
-            self.bolier.K5PCV4=self.bolier.KK5PCV4.mechanic_adjustment(float(task))
+            self.bolier.K5PCV4=self.bolier.KK5PCV4.adjustment(float(task))
 
     def updater(self):
         self.value_1.setText(str(self.bolier.K5F6x))
@@ -89,18 +89,19 @@ class Testing_window(QtWidgets.QMainWindow, ui):
 
     def drum_lavel(self):
         K5F5=self.bolier.change_K5L1_1()
-        if self.bolier.K5F5>K5F5:
-            self.bolier.K5L1_1+=((self.bolier.K5F5-K5F5)**2)+self.bolier.K5L1_1_excitement
-        else:
-            self.bolier.K5L1_1 -= ((self.bolier.K5F5 - K5F5) ** 2)+self.bolier.K5L1_1_excitement
+        self.bolier.K5L1_1+=(((self.bolier.K5F5-K5F5)))+self.bolier.K5L1_1_excitement
+        self.bolier.K5LCV1 = self.bolier.KK5LCV1.adjustment(K5LCV1_task=(self.bolier.K5LCV1_autotask(K5F5)))
+
+
+
 
 
     def work(self):
         while True:
-            self.bolier.K5LCV1 = self.bolier.KK5LCV1.mechanic_adjustment()
+            self.bolier.K5LCV1 = self.bolier.KK5LCV1.adjustment()
             self.bolier.change_K5F5()
             self.drum_lavel()
-            self.bolier.K5PCV4=self.bolier.KK5PCV4.mechanic_adjustment()
+            self.bolier.K5PCV4=self.bolier.KK5PCV4.adjustment()
             self.bolier.change_K5F3()
             self.bolier.change_K5F6x()
             self.updater()

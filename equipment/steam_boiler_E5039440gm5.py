@@ -3,6 +3,10 @@ import pickle
 import pandas as pd
 from pathlib import Path
 from sklearn.preprocessing import PolynomialFeatures
+from gpiozero import PWMOutputDevice
+from gpiozero.pins.pigpio import PiGPIOFactory
+import control
+from control.matlab import *
 from sklearn.linear_model import Ridge
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.model_selection import train_test_split
@@ -526,6 +530,16 @@ class Steam_boiler():
     def change_K5F6x(self):
         self.K5F6x=self.K5F3/100+self.K5F6x_excitement
 
+    def K5LCV1_autotask(self, K5F5):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5LCV1_auto.sav'), 'rb'))
+        entrance = {'K5F5.PV': [K5F5]}
+        table_entrance = pd.DataFrame(data=entrance)
+        quadratic = PolynomialFeatures(degree=2)
+        out=(float(model.predict(quadratic.fit_transform(table_entrance))[0][0]))
+        return out
+
+
+
 
 class Smoke_pump():
     def __init__(self, mode):
@@ -743,14 +757,33 @@ class K5LCV1_control():
         self.K5LCV1 = K5LCV1
         self.speed = 1.11
 
-    def mechanic_adjustment(self, K5LCV1_task = -1):
-        if K5LCV1_task!= -1:
+    def adjustment(self, K5LCV1_task = -101, level=0,):
+        if K5LCV1_task!= -101:
             self.K5LCV1_task = K5LCV1_task  # пробросить число от пользователя
+        elif level!=0:
+            adjustment=level*0.5
+            # adjustment = self.regulate_pin(self.K5LCV1, level)
+            self.K5LCV1_task=self.K5LCV1_task+adjustment
         if self.K5LCV1_task > self.K5LCV1:
             self.open()
         elif self.K5LCV1_task < self.K5LCV1:
             self.close()
         return self.K5LCV1
+
+    def regulate_pin(self, current_position, level):
+        factory = PiGPIOFactory()
+        pin = PWMOutputDevice(18, pin_factory=factory)
+        pin.value = current_position
+        while True:
+            if level > 350:
+                level = 350
+            elif level < -350:
+                level = -350
+            duty_cycle = level / 700
+            pin.value = duty_cycle
+            print(pin.value)
+        return pin.value
+
 
     def open(self):
         if self.K5LCV1 + self.speed >= self.K5LCV1_task:
@@ -770,7 +803,7 @@ class K5PCV4_control():
         self.K5PCV4 = K5PCV4
         self.speed = 1.11
 
-    def mechanic_adjustment(self, K5PCV4_task = -1):
+    def adjustment(self, K5PCV4_task = -1):
         if K5PCV4_task!= -1:
             self.K5PCV4_task = K5PCV4_task  # пробросить число от пользователя
         if self.K5PCV4_task > self.K5PCV4:

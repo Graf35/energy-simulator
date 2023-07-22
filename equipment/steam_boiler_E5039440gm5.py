@@ -3,7 +3,7 @@ import pickle
 import pandas as pd
 from pathlib import Path
 from sklearn.preprocessing import PolynomialFeatures
-from sklearn.linear_model import Ridge
+import sklearn
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import MultiTaskLassoCV
@@ -89,9 +89,10 @@ class Steam_boiler():
         K5P13 = 0
         K5P13_1 = 0
         self.K5LCV1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5LCV1", mode))
+        self.K5LCV2=float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5LCV2", mode))
         self.K5LCV1_1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5LCV1_1", mode))
         self.K5F6x = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5F6x", mode))
-        K0P102_1 = 0
+        self.K0P102_1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K0P102_1", mode))
         K0T104_2 = 0
         K5V1 = False
         K5V1_control = "M"
@@ -170,6 +171,9 @@ class Steam_boiler():
         self.K5F5_excitement=0
         self.K5F3_excitement=0
         self.K5L1_1_excitement=0
+        self.K5T15_excitement=0
+        self.K5T16_excitement = 0
+        self.K5T17_excitement = 0
 
     def change_K5T4(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T4.sav'), 'rb'))
@@ -444,13 +448,11 @@ class Steam_boiler():
         self.K5Q3 = float(model.predict(table_entrance)[0][0])
     # TODO:Переобучит сеть в K5Q3
 
-    def change_K5T17(self):
-        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T17.sav'), 'rb'))
-        entrance = {'K5PS14_2.PV':[self.K5PS14_2], 'K5T6.PV':[self.K5T6], 'K5P10.PV':[self.K5P10], 'K5LCV1I.PV':[self.K5LCV1I],
-                    'K5F5.PV':[self.K5F5],'K5T14.PV':[self.K5T14], 'K5F6X.PV':[self.K5F6X], 'K5TCV2I.PV':[self.K5TCV2I],
-                    'K5T15.PV':[self.K5T15], 'K5P8.PV':[self.K5P8]}
+    def change_K5T15(self):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T15.sav'), 'rb'))
+        entrance = {'K5F5.PV':[self.K5F5],'K5F6X.PV':[self.K5F6x],'K5T16.PV':[self.K5T16],'K5T17.PV':[self.K5T17]}
         table_entrance = pd.DataFrame(data=entrance)
-        self.K5T17= float(model.predict(table_entrance)[0][0])
+        self.K5T15= float(model.predict(table_entrance)[0][0])+self.K5T15_excitement
 
     def change_K5T3(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T3.sav'), 'rb'))
@@ -481,17 +483,17 @@ class Steam_boiler():
 
     def change_K5T16(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T16.sav'), 'rb'))
-        entrance = {'K0P102_1.PV':[self.K0P102_1.PV]}
+        entrance = {'K0P102_1.PV':[self.K0P102_1]}
         table_entrance = pd.DataFrame(data=entrance)
-        self.K5T16= float(model.predict(table_entrance)[0][0])
+        self.K5T16= float(model.predict(table_entrance)[0][0])+self.K5T16_excitement
 
     def change_K5T17(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T17.sav'), 'rb'))
-        entrance = {'K5PS14_2.PV':[self.K5PS14_2], 'K5T6.PV':[self.K5T6], 'K5P10.PV':[self.K5P10], 'K5LCV1I.PV':[self.K5LCV1I],
-                    'K5F5.PV':[self.K5F5],'K5T14.PV':[self.K5T14], 'K5F6X.PV':[self.K5F6X],'K5TCV2I.PV':[self.K5TCV2I],
+        entrance = {'K5PS14_2.PV':[self.K5PS14_2], 'K5T6.PV':[self.K5T6], 'K5P10.PV':[self.K5P10], 'K5LCV1I.PV':[self.K5LCV1],
+                    'K5F5.PV':[self.K5F5],'K5T14.PV':[self.K5T14],'K5TCV2I.PV':[self.K5LCV2], 'K5F6X.PV':[self.K5F6x],
                     'K5T15.PV':[self.K5T15],'K5P8.PV':[self.K5P8]}
         table_entrance = pd.DataFrame(data=entrance)
-        self.K5T17= float(model.predict(table_entrance)[0][0])
+        self.K5T17= float(model.predict(table_entrance)[0][0])+self.K5T17_excitement
 
     def change_K5P8(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5P8.sav'), 'rb'))

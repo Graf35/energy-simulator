@@ -54,9 +54,13 @@ class Testing_window(QtWidgets.QMainWindow, ui):
         self.Legend_3.setText("Температура конденсата")
         self.value_3.setText(str(self.bolier.K5T15))
         self.unit_3.setText("C")
+        self.Legend_4.setText("Давление питательной воды")
+        self.value_4.setText(str(self.bolier.K5P10))
+        self.unit_4.setText("МПа")
         self.management_params_1.addItem("")
         self.management_params_2.addItem("")
         self.excitement_params.addItems(["K5T16", "K5T17", "K5T15"])
+
 
     def management_1(self):
         task = self.management_task_1.toPlainText()
@@ -74,7 +78,7 @@ class Testing_window(QtWidgets.QMainWindow, ui):
         self.value_1.setText(str(self.bolier.K5T16))
         self.value_2.setText(str(self.bolier.K5T17))
         self.value_3.setText(str(self.bolier.K5T15))
-        # self.value_4.setText(str(self.bolier.K5LCV1))
+        self.value_4.setText(str(self.bolier.K5P10))
         # self.value_5.setText(str(self.bolier.K5F3))
         # self.value_6.setText(str(self.bolier.K5PCV4))
 
@@ -98,6 +102,7 @@ class Testing_window(QtWidgets.QMainWindow, ui):
             self.bolier.change_K5T15()
             self.bolier.change_K5T16()
             self.bolier.change_K5T17()
+            self.bolier.change_K5P10()
             self.updater()
             sleep(2)
 

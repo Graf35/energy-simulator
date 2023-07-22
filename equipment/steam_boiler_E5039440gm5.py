@@ -3,10 +3,10 @@ import pickle
 import pandas as pd
 from pathlib import Path
 from sklearn.preprocessing import PolynomialFeatures
-from gpiozero import PWMOutputDevice
-from gpiozero.pins.pigpio import PiGPIOFactory
-import control
-from control.matlab import *
+# from gpiozero import PWMOutputDevice
+# from gpiozero.pins.pigpio import PiGPIOFactory
+# import control
+# from control.matlab import *
 from sklearn.linear_model import Ridge
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.model_selection import train_test_split
@@ -482,8 +482,9 @@ class Steam_boiler():
     def change_K5P10(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5P10.sav'), 'rb'))
         entrance = {'K5PS14_2.PV':[self.K5PS14_2]}
+        quadratic = PolynomialFeatures(degree=2)
         table_entrance = pd.DataFrame(data=entrance)
-        self.K5P10= float(model.predict(table_entrance)[0][0])
+        self.K5P10= float(model.predict(quadratic.fit_transform(table_entrance))[0][0])
 
     def change_K5T16(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T16.sav'), 'rb'))
@@ -522,8 +523,7 @@ class Steam_boiler():
         entrance = {'K5LCV1I.PV':[self.K5LCV1]}
         entrance_1 = {'K5LCV1I.PV': [self.K5LCV1_1]}
         table_entrance = pd.DataFrame(data=entrance)
-        table_entrance_1 = pd.DataFrame(data=entrance_1)
-        self.K5F5= float(model.predict(table_entrance)[0][0])+float(model.predict(table_entrance_1)[0][0])+self.K5F5_excitement
+        self.K5F5= float(model.predict(table_entrance)[0][0])+self.K5F5_excitement
 
     def change_K5F3(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5F3.sav'), 'rb'))

@@ -63,7 +63,10 @@ class Testing_window(QtWidgets.QMainWindow, ui):
         self.Legend_6.setText("Положение клапана по газу")
         self.value_6.setText(str(self.bolier.K5PCV4))
         self.unit_6.setText("%")
-        self.management_params_1.addItem("K5LCV1")
+        self.Legend_7.setText("Положение клапана по питательной воде")
+        self.value_7.setText(str(self.bolier.K5LCV1_1))
+        self.unit_7.setText("%")
+        self.management_params_1.addItem("K5LCV1", "K5LCV1_1")
         self.management_params_2.addItem("K5PCV4")
         self.excitement_params.addItems(["K5L1_1", "K5F6x", "K5F3", "K5F5"])
 
@@ -111,3 +114,11 @@ class Testing_window(QtWidgets.QMainWindow, ui):
         parametr = self.excitement_params.currentText()
         self.excitement_task.clear()
         setattr(self.bolier, parametr+"_excitement", task)
+
+    def run_boler(self):
+        self.bolier.K5LCV1 = self.bolier.KK5LCV1.mechanic_adjustment()
+        self.bolier.change_K5F5()
+        self.drum_lavel()
+        self.bolier.K5PCV4 = self.bolier.KK5PCV4.mechanic_adjustment()
+        self.bolier.change_K5F3()
+        self.bolier.change_K5F6x()

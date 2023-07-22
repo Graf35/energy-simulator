@@ -89,6 +89,7 @@ class Steam_boiler():
         K5P13 = 0
         K5P13_1 = 0
         self.K5LCV1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5LCV1", mode))
+        self.K5LCV1_1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5LCV1_1", mode))
         self.K5F6x = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5F6x", mode))
         K0P102_1 = 0
         K0T104_2 = 0
@@ -512,10 +513,11 @@ class Steam_boiler():
 
     def change_K5F5(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5F5.sav'), 'rb'))
-        entrance = {'K5LCV1I':[self.K5LCV1]}
+        entrance = {'K5LCV1I.PV':[self.K5LCV1]}
+        entrance_1 = {'K5LCV1I.PV': [self.K5LCV1_1]}
         table_entrance = pd.DataFrame(data=entrance)
-        quadratic = PolynomialFeatures(degree=2)
-        self.K5F5= float(model.predict(quadratic.fit_transform(table_entrance))[0][0])+self.K5F5_excitement
+        table_entrance_1 = pd.DataFrame(data=entrance_1)
+        self.K5F5= float(model.predict(table_entrance)[0][0])+float(model.predict(table_entrance_1)[0][0])+self.K5F5_excitement
 
     def change_K5F3(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5F3.sav'), 'rb'))

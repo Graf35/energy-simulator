@@ -6,6 +6,8 @@ from PyQt5 import  uic
 import threading
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel
 import os
+import subprocess
+
 from equipment.steam_boiler_E5039440gm5 import Steam_boiler
 from PyQt5.QtWidgets import QApplication, QMainWindow
 import asyncio
@@ -40,6 +42,9 @@ class Testing_window(QtWidgets.QMainWindow, ui):
         self.updater_deman = threading.Thread(target=self.updater, daemon=True)
         self.updater_deman.start()
         self.power_supply_node()
+        # subprocess.call(['python', 'steam_and_water.py', self])
+        # s=steam_and_water.Steam_and_water(self)
+
 
     def steam_cooler(self):
         self.Legend_1.setText("text2")

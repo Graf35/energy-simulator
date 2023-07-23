@@ -3,11 +3,18 @@ import csv
 from flask import render_template
 from datetime import datetime
 
+
 app = Flask(__name__)
 
-# @app.route("/")
-# def hello():
-#     return "Hello World!"
+# class Steam_and_water():
+#     @app.route('/')
+#     def __init__(self, parent):
+#         if __name__ == '__main__':
+#             app.run()
+#         text = "Текст для обновления"
+#         time = datetime.now().strftime('%H:%M:%S')
+#         return render_template('steam_and_water.html', text=text, time=time)
+
 
 # Функция для получения значения с сервера
 def get_current_time():
@@ -21,17 +28,20 @@ def get_text():
 
 @app.route('/')
 def index():
-    return render_template('steam_and_water.html')
+    text = "Текст для обновления"
+    time = datetime.now().strftime('%H:%M:%S')
+    return render_template('steam_and_water.html', text=text, time=time)
 
+@app.route('/time')
 def update_value():
     time = get_current_time()
     return jsonify(time=time)
 
 # Маршрут сервера, возвращающий значение счетчика
-@app.route('/text')
-def update_text():
-    text = get_text()
-    return jsonify(text=text)
+# @app.route('/text')
+# def update_text():
+#     text = get_text()
+#     return jsonify(text=text)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run()

@@ -1,9 +1,12 @@
 #Эти библиотеки позволяют работать с графикой.
+import queue
+
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import  QFileDialog
 from PyQt5.QtGui import QPixmap
 from PyQt5 import  uic
 import threading
+import multiprocessing
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel
 import os
 import subprocess
@@ -84,7 +87,7 @@ class Testing_window(QtWidgets.QMainWindow, ui):
         self.value_2.setText(str(self.bolier.K5T17))
         self.value_3.setText(str(self.bolier.K5T15))
         self.value_4.setText(str(self.bolier.K5P10))
-        # self.value_5.setText(str(self.bolier.K5F3))
+        self.value_5.setText(str(self.bolier.K5LCV1))
         # self.value_6.setText(str(self.bolier.K5PCV4))
 
     def drum_lavel(self):
@@ -109,6 +112,7 @@ class Testing_window(QtWidgets.QMainWindow, ui):
             self.bolier.change_K5T17()
             self.bolier.change_K5P10()
             self.updater()
+            # queue.put(self.bolier.K5F5)
             sleep(2)
 
     def excitement(self):
@@ -127,3 +131,9 @@ class Testing_window(QtWidgets.QMainWindow, ui):
         self.bolier.change_K5T15()
         self.bolier.change_K5T16()
         self.bolier.change_K5T17()
+
+    def start_process(self):
+        my_queue = multiprocessing.Queue()
+        p = multiprocessing.Process(target=self.work(my_queue))
+        p.start()
+        return my_queue

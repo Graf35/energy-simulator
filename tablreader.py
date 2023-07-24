@@ -1,5 +1,6 @@
 #Импортируем библиотеку для работы с таблицами
 from pandas import read_csv
+import csv
 
 #Эта функция обрабатывает данные из таблицы 1
 def Tab(Tab, anser, value, required):
@@ -24,3 +25,10 @@ def Tab(Tab, anser, value, required):
     else:
         #Выводим значение искомой переменной
         return (article_read[required][line])
+
+def write_to_csv(data):
+    with open('input.csv', 'a') as csvfile:
+        writer = csv.writer(csvfile)
+        for variable, value in data.items():
+            writer.writerow([variable, value])
+

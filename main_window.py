@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import  QFileDialog
 from PyQt5.QtGui import QPixmap
 from PyQt5 import  uic
 import threading
-import test_api
+import steam_bollerE5039440gm5_run
 import sys
 import asyncio
 
@@ -22,7 +22,7 @@ class MaimWindow(QtWidgets.QMainWindow, ui):
 
     def btnClicked(self):
         try:
-            self.test= test_api.Testing_window(self.comboBox_2.currentText())
+            self.test= steam_bollerE5039440gm5_run.Testing_window(self.comboBox_2.currentText())
             asyncio.run(self.show_window())
         except:
             pass

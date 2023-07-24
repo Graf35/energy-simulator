@@ -3,6 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Запрашиваем данные с сервера
+            $.get("/get_data", function(data) {
+                var output = document.getElementById('text');
+                output.innerHTML = data;  // Отображение данных на странице
+            });
+        });
+    </script>
 </head>
 <style>
         #time {

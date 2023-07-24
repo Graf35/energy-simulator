@@ -1,6 +1,6 @@
 # Импортируем модуль Window. Он необходим для создания графического окна
 import main_window
-import test_api
+import steam_bollerE5039440gm5_run
 #Импортируем PyQt5 для работы с графикой
 from PyQt5 import QtWidgets
 #Модуль sys обеспечивает доступ к некоторым переменным и функциям, взаимодействующим с интерпретатором python.

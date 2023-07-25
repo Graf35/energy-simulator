@@ -1,33 +1,12 @@
 #Эти библиотеки позволяют работать с графикой.
-import queue
 
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import  QFileDialog
-from PyQt5.QtGui import QPixmap
+
 from PyQt5 import  uic
 import threading
-import multiprocessing
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel
-import os
-import subprocess
-
+import pika
 from equipment.steam_boiler_E5039440gm5 import Steam_boiler
-from PyQt5.QtWidgets import QApplication, QMainWindow
-import asyncio
 from time import sleep
-from sklearn.preprocessing import PolynomialFeatures
-from sklearn.linear_model import Ridge
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import MultiTaskLassoCV
-from sklearn.linear_model import Ridge
-import seaborn as sns
-from scipy.stats import norm
-from scipy import stats
-from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error
-from sklearn import datasets, linear_model
-from sklearn.model_selection import cross_val_score
 
 #Определяем имяи путь до файлас формой окна.
 ui=uic.loadUiType("interface/testing_window.ui")[0]
@@ -37,6 +16,13 @@ class Testing_window(QtWidgets.QMainWindow, ui):
     def __init__(self, mode):
         super().__init__()
         self.setupUi(self)
+        self.connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+        self.channel = self.connection.channel()
+        self.connection2 = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+        self.channel2= self.connection.channel()
+        self.channel2.queue_declare(queue='boiler_data')
+        self.listening_deman = threading.Thread(target=self.listening_queue, daemon=True)
+        self.listening_deman.start()
         self.management_button.clicked.connect(self.management_1)
         self.excitement_botton.clicked.connect(self.excitement)
         self.bolier = Steam_boiler(mode)
@@ -45,6 +31,7 @@ class Testing_window(QtWidgets.QMainWindow, ui):
         self.updater_deman = threading.Thread(target=self.updater, daemon=True)
         self.updater_deman.start()
         self.power_supply_node()
+
         # subprocess.call(['python', 'steam_and_water.py', self])
         # s=steam_and_water.Steam_and_water(self)
 
@@ -93,7 +80,7 @@ class Testing_window(QtWidgets.QMainWindow, ui):
     def drum_lavel(self):
         K5F5=self.bolier.change_K5L1_1()
         self.bolier.K5L1_1+=(((self.bolier.K5F5-K5F5)))+self.bolier.K5L1_1_excitement
-        self.bolier.K5LCV1 = self.bolier.KK5LCV1.adjustment(K5LCV1_task=(self.bolier.K5LCV1_autotask(K5F5)))
+        # self.bolier.K5LCV1 = self.bolier.KK5LCV1.adjustment(K5LCV1_task=(self.bolier.K5LCV1_autotask(K5F5)))
 
 
 
@@ -103,6 +90,8 @@ class Testing_window(QtWidgets.QMainWindow, ui):
         while True:
             self.bolier.K5LCV1 = self.bolier.KK5LCV1.adjustment()
             self.bolier.change_K5F5()
+            self.send_data("K5LCV1 "+str(self.bolier.K5LCV1))
+            self.send_data("K5F5 "+str(self.bolier.K5F5))
             self.drum_lavel()
             self.bolier.K5PCV4=self.bolier.KK5PCV4.adjustment()
             self.bolier.change_K5F3()
@@ -112,7 +101,6 @@ class Testing_window(QtWidgets.QMainWindow, ui):
             self.bolier.change_K5T17()
             self.bolier.change_K5P10()
             self.updater()
-            # queue.put(self.bolier.K5F5)
             sleep(2)
 
     def excitement(self):
@@ -122,18 +110,34 @@ class Testing_window(QtWidgets.QMainWindow, ui):
         setattr(self.bolier, parametr+"_excitement", task)
 
     def run_boler(self):
-        self.bolier.K5LCV1 = self.bolier.KK5LCV1.mechanic_adjustment()
+        self.bolier.K5LCV1 = self.bolier.KK5LCV1.adjustment()
         self.bolier.change_K5F5()
         self.drum_lavel()
-        self.bolier.K5PCV4 = self.bolier.KK5PCV4.mechanic_adjustment()
+        self.bolier.K5PCV4 = self.bolier.KK5PCV4.adjustment()
         self.bolier.change_K5F3()
         self.bolier.change_K5F6x()
         self.bolier.change_K5T15()
         self.bolier.change_K5T16()
         self.bolier.change_K5T17()
 
-    def start_process(self):
-        my_queue = multiprocessing.Queue()
-        p = multiprocessing.Process(target=self.work(my_queue))
-        p.start()
-        return my_queue
+    def send_data(self, data):
+        # Отправка данных в RabbitMQ
+        self.channel.basic_publish(exchange='', routing_key='data_queue', body=str(data))
+
+    def process_data(self, data):
+        variable, value = data.split()
+        tag_to_func = {"K5LCV1":self.bolier.KK5LCV1.adjustment(float(value))}
+        tag_to_func[variable]
+
+
+    # Callback-функция для обработки полученных сообщений
+    def callback(self, ch, method, properties, body):
+        self.process_data(body.decode())
+
+    def listening_queue(self):
+        self.channel2.basic_consume(queue='boiler_data', on_message_callback=self.callback, auto_ack=True)
+        self.channel2.start_consuming()
+    def __del__(self):
+        # Закрытие соединения с RabbitMQ
+        self.connection.close()
+        self.connection2.close()

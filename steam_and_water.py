@@ -1,25 +1,19 @@
-from flask import Flask, jsonify, request
-from equipment.steam_boiler_E5039440gm5 import Steam_boiler
-from flask import render_template
+from flask import Flask, jsonify, render_template, request
 from datetime import datetime
-import multiprocessing
-from tablreader import write_to_csv
-from steam_bollerE5039440gm5_run import Testing_window
+import webbrowser
+import pika
+import threading
 
-# bolier = Testing_window("Работа 20Т")
-# my_queue = bolier.start_process()
+
+connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+channel = connection.channel()
+# Создание очереди сообщений
+channel.queue_declare(queue='data_queue')
+
+K5F5=0
+K5LCV1=0
 
 app = Flask(__name__)
-
-# class Steam_and_water():
-#     @app.route('/')
-#     def __init__(self, parent):
-#         if __name__ == '__main__':
-#             app.run()
-#         text = "Текст для обновления"
-#         time = datetime.now().strftime('%H:%M:%S')
-#         return render_template('steam_and_water.html', text=text, time=time)
-
 
 # Функция для получения значения с сервера
 def get_current_time():
@@ -29,16 +23,14 @@ def get_current_time():
 # Функция для получения текста
 def get_text():
     # Здесь можно добавить логику для получения нужного текста
-    return str(my_queue.get())
+    return str(K5LCV1)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    # text=get_data()
     time = datetime.now().strftime('%H:%M:%S')
     if request.method == 'POST':
-        #text = request.form.get('K5LCV1')
-
-        K5LCV1_1 = request.form.get('K5LCV1_1')
+        K5LCV1 = request.form.get('K5LCV1')
+        send_data("K5LCV1 "+str(K5LCV1))
     return render_template('steam_and_water.html', text="1", time=time)
 
 @app.route('/time')
@@ -46,24 +38,30 @@ def update_value():
     time = get_current_time()
     return jsonify(time=time)
 
-# @app.route('/text')
-# def get_data():
-#     # Получение данных из очереди
-#     result = queue.get()
-#     return str(result)
+# Callback-функция для обработки полученных данных
+def process_data(data):
+    variable, value=data.split()
+    globals()[variable]= value
 
+# Callback-функция для обработки полученных сообщений
+def callback(ch, method, properties, body):
+    process_data(body.decode())
 
+def listening_queue():
+    channel.basic_consume(queue='data_queue', on_message_callback=callback, auto_ack=True)
+    channel.start_consuming()
 
-# Маршрут сервера, возвращающий значение счетчика
-# @app.route('/text')
-# def update_text():
-#     text = get_text()
-#     return jsonify(text=text)
+def send_data(data):
+    # Отправка данных в RabbitMQ
+    channel.basic_publish(exchange='', routing_key='boiler_data', body=str(data))
+@app.route('/text')
+def update_text():
+    text = get_text()
+    return jsonify(text=text)
 
 if __name__ == '__main__':
-    # my_queue = queue.Queue()
-    # p = multiprocessing.Process(target=bolier.mathematics_process, args=(my_queue,))
-    # p.start()
+    webbrowser.open('http://127.0.0.1:5000')
+    # Привязка callback-функции к очереди сообщений
+    listening_deman = threading.Thread(target=listening_queue, daemon=True)
+    listening_deman.start()
     app.run()
-    # driver = webdriver.Chrome()
-    # driver.get('http://127.0.0.1:5000')

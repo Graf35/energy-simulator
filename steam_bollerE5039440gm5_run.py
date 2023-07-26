@@ -8,14 +8,12 @@ import pika
 from equipment.steam_boiler_E5039440gm5 import Steam_boiler
 from time import sleep
 
-#Определяем имяи путь до файлас формой окна.
-ui=uic.loadUiType("interface/testing_window.ui")[0]
+
 
 #Этот класс определяет параметры окна и взаимодействие с ним.
-class Steam_bollerE5039440gm5(QtWidgets.QMainWindow, ui):
+class Steam_bollerE5039440gm5():
     def __init__(self, mode):
         super().__init__()
-        self.setupUi(self)
         self.connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
         self.channel = self.connection.channel()
         self.connection2 = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
@@ -23,8 +21,6 @@ class Steam_bollerE5039440gm5(QtWidgets.QMainWindow, ui):
         self.channel2.queue_declare(queue='boiler_data')
         self.listening_deman = threading.Thread(target=self.listening_queue, daemon=True)
         self.listening_deman.start()
-        self.management_button.clicked.connect(self.management_1)
-        self.excitement_botton.clicked.connect(self.excitement)
         self.bolier = Steam_boiler(mode)
         self.work_deman = threading.Thread(target=self.work, daemon=True)
         self.work_deman.start()
@@ -100,7 +96,6 @@ class Steam_bollerE5039440gm5(QtWidgets.QMainWindow, ui):
             self.bolier.change_K5T16()
             self.bolier.change_K5T17()
             self.bolier.change_K5P10()
-            self.updater()
             sleep(2)
 
     def excitement(self):

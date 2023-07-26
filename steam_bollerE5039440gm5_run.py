@@ -12,7 +12,7 @@ from time import sleep
 ui=uic.loadUiType("interface/testing_window.ui")[0]
 
 #Этот класс определяет параметры окна и взаимодействие с ним.
-class Testing_window(QtWidgets.QMainWindow, ui):
+class Steam_bollerE5039440gm5(QtWidgets.QMainWindow, ui):
     def __init__(self, mode):
         super().__init__()
         self.setupUi(self)

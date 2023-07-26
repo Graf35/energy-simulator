@@ -1,4 +1,4 @@
-import tablreader
+import Scripts
 import pickle
 import pandas as pd
 from pathlib import Path
@@ -19,84 +19,85 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 from sklearn import datasets, linear_model
 from sklearn.model_selection import cross_val_score
+import Scripts
 
 
 class Steam_boiler():
 
     def __init__(self, mode):
-        self.K5T4 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T4", mode))
-        self.K5P21 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P21", mode))
-        self.K5T18_2 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T18_2", mode))
-        self.K5T7 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T7", mode))
-        self.K5P19_1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P19_1", mode))
-        self.K5P19_2 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P19_2", mode))
-        self.K5T8_1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T8_1", mode))
-        self.K5T8_2 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T8_2", mode))
-        self.K5T8_3 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T8_3", mode))
-        self.K5P23 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P23", mode))
-        self.K5P24 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P24", mode))
-        self.K5P20 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P20", mode))
-        self.K5P18_1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P18_1", mode))
-        self.K5P18_2 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P18_2", mode))
-        self.K5T5_2 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T5_2", mode))
-        self.K5T5_1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T5_1", mode))
-        self.K5T18_1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T18_1", mode))
-        self.K5T9_2 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T9_2", mode))
+        self.K5T4 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T4", mode))
+        self.K5P21 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P21", mode))
+        self.K5T18_2 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T18_2", mode))
+        self.K5T7 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T7", mode))
+        self.K5P19_1 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P19_1", mode))
+        self.K5P19_2 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P19_2", mode))
+        self.K5T8_1 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T8_1", mode))
+        self.K5T8_2 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T8_2", mode))
+        self.K5T8_3 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T8_3", mode))
+        self.K5P23 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P23", mode))
+        self.K5P24 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P24", mode))
+        self.K5P20 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P20", mode))
+        self.K5P18_1 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P18_1", mode))
+        self.K5P18_2 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P18_2", mode))
+        self.K5T5_2 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T5_2", mode))
+        self.K5T5_1 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T5_1", mode))
+        self.K5T18_1 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T18_1", mode))
+        self.K5T9_2 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T9_2", mode))
         self.K5T9_1 = self.K5T9_2
-        self.K5T10_1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T10_1", mode))
-        self.K5T10_2 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T10_2", mode))
-        self.K5T8_4 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T8_4", mode))
-        self.K5T8_5 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T8_5", mode))
-        self.K5T8_6 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T8_6", mode))
-        self.K5PS14_1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PS14_1", mode))
-        self.K5PS14_2 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PS14_2", mode))
-        self.K5V4 = bool(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5V4", mode))
-        self.K5L1_1_connection =bool(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_1_connection", mode))
-        self.K5L1_1 =float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_1", mode))
-        self.K5L1_1_select =bool(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_1_select", mode))
-        self.K5L1_2_connection =bool(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_2_connection", mode))
-        self.K5L1_2 =float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_2", mode))
-        self.K5L1_2_select =bool(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_2_select", mode))
-        # self.K5L1_3_connection =bool(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_3_connection", mode))
-        # self.K5L1_3= float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_3", mode))
-        # self.K5L1_3_select =bool(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_3_select", mode))
-        # self.K5L1_4_connection =bool(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_4_connection", mode))
-        # self.K5L1_4 =float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_4", mode))
-        # self.K5L1_4_select =bool(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_4_select", mode))
-        # self.K5P5_1 =float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P5_1", mode))
-        # self.k5P5_1_select =bool(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "k5P5_1_select", mode))
-        # self.K5P5_2 =float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P5_2", mode))
-        # self.K5P5_2_select =bool(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P5_2_select", mode))
+        self.K5T10_1 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T10_1", mode))
+        self.K5T10_2 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T10_2", mode))
+        self.K5T8_4 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T8_4", mode))
+        self.K5T8_5 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T8_5", mode))
+        self.K5T8_6 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T8_6", mode))
+        self.K5PS14_1 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PS14_1", mode))
+        self.K5PS14_2 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PS14_2", mode))
+        self.K5V4 = bool(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5V4", mode))
+        self.K5L1_1_connection =bool(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_1_connection", mode))
+        self.K5L1_1 =float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_1", mode))
+        self.K5L1_1_select =bool(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_1_select", mode))
+        self.K5L1_2_connection =bool(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_2_connection", mode))
+        self.K5L1_2 =float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_2", mode))
+        self.K5L1_2_select =bool(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_2_select", mode))
+        # self.K5L1_3_connection =bool(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_3_connection", mode))
+        # self.K5L1_3= float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_3", mode))
+        # self.K5L1_3_select =bool(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_3_select", mode))
+        # self.K5L1_4_connection =bool(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_4_connection", mode))
+        # self.K5L1_4 =float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_4", mode))
+        # self.K5L1_4_select =bool(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L1_4_select", mode))
+        # self.K5P5_1 =float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P5_1", mode))
+        # self.k5P5_1_select =bool(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "k5P5_1_select", mode))
+        # self.K5P5_2 =float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P5_2", mode))
+        # self.K5P5_2_select =bool(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P5_2_select", mode))
         self.purge_proved = False
-        self.K5Q3 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5Q3", mode))
-        self.K5T17 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T17", mode))
+        self.K5Q3 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5Q3", mode))
+        self.K5T17 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T17", mode))
         self.K5V10 = False
         self.K5V7 = False
         self.K5V8 = False
-        self.K5T3 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T3", mode))
+        self.K5T3 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T3", mode))
         self.K5V9 = False
-        self.K5T14 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T14", mode))
+        self.K5T14 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T14", mode))
         self.K5V3 = False
-        self.K5T6 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T6", mode))
-        self.K5P10 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P10", mode))
-        self.K5T15 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T15", mode))
-        self.K5T16 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T16", mode))
-        self.K5P8 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P8", mode))
-        self.K5T2_1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T2_1", mode))
+        self.K5T6 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T6", mode))
+        self.K5P10 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P10", mode))
+        self.K5T15 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T15", mode))
+        self.K5T16 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T16", mode))
+        self.K5P8 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P8", mode))
+        self.K5T2_1 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T2_1", mode))
         self.K5T2_1_select = True
-        self.K5T2_2 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T2_2", mode))
+        self.K5T2_2 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T2_2", mode))
         self.K5T2_2_select = False
         self.K5V12 = False
         self.K5F11 = False
-        self.K5F5 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5F5", mode))
+        self.K5F5 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5F5", mode))
         K5L2 = 0
         K5P13 = 0
         K5P13_1 = 0
-        self.K5LCV1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5LCV1", mode))
-        self.K5LCV2=float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5LCV2", mode))
-        self.K5LCV1_1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5LCV1_1", mode))
-        self.K5F6x = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5F6x", mode))
-        self.K0P102_1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K0P102_1", mode))
+        self.K5LCV1 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5LCV1", mode))
+        self.K5LCV2=float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5LCV2", mode))
+        self.K5LCV1_1 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5LCV1_1", mode))
+        self.K5F6x = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5F6x", mode))
+        self.K0P102_1 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K0P102_1", mode))
         K0T104_2 = 0
         K5V1 = False
         K5V1_control = "M"
@@ -120,10 +121,10 @@ class Steam_boiler():
         K5P4_2_select = True
         K5V28 = False
         K5HCV53 = False
-        self.K5F3 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5F3", mode))
+        self.K5F3 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5F3", mode))
         K5T20 = 0
         K5P110 = 63
-        self.K5PCV4 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV4", mode))
+        self.K5PCV4 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV4", mode))
         K5PCV4_task = 0
         K5PCV4_apass = False
         K5PCV4_mode = "M"
@@ -547,14 +548,14 @@ class Steam_boiler():
 
 class Smoke_pump():
     def __init__(self, mode):
-        self.smoke_pump = tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "smoke_pump", mode)
+        self.smoke_pump = Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "smoke_pump", mode)
         self.current_smoke_pump = int(
-            tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "current_smoke_pump", mode))
-        self.K5PC5CHSP = int(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PC5CHSP", mode))
-        self.K5PC5CHOP = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PC5CHOP", mode))
-        self.K5PC5CHMO = tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PC5CHMO", mode)
+            Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "current_smoke_pump", mode))
+        self.K5PC5CHSP = int(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PC5CHSP", mode))
+        self.K5PC5CHOP = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PC5CHOP", mode))
+        self.K5PC5CHMO = Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PC5CHMO", mode)
         self.K5PC5CHOP_task = float(
-            tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PC5CHOP", mode))
+            Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PC5CHOP", mode))
         self.speed = 1.11
 
     def automatic_adjustment(self, K5PC6CH, K5F3):
@@ -589,8 +590,8 @@ class Smoke_pump():
 class K5PCV5():
     def __init__(self, mode):
         self.K5PCV5_task = float(
-            tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV5_task", mode))
-        self.K5PCV5 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV5", mode))
+            Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV5_task", mode))
+        self.K5PCV5 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV5", mode))
         self.speed = 1.11
 
     def mechanic_adjustment(self, K5PCV5_task):
@@ -615,8 +616,8 @@ class K5PCV5():
 class K5HCV63():
     def __init__(self, mode):
         self.K5HCV63_task = float(
-            tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5HCV63_task", mode))
-        self.K5HCV63 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV5", mode))
+            Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5HCV63_task", mode))
+        self.K5HCV63 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV5", mode))
         self.speed = 1.11
 
     def mechanic_adjustment(self, K5HCV63_task):
@@ -641,8 +642,8 @@ class K5HCV63():
 class K5HCV62():
     def __init__(self, mode):
         self.K5HCV62_task = float(
-            tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5HCV62_task", mode))
-        self.K5HCV62 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV5", mode))
+            Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5HCV62_task", mode))
+        self.K5HCV62 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV5", mode))
         self.speed = 1.11
 
     def mechanic_adjustment(self, K5HCV63_task):
@@ -666,14 +667,14 @@ class K5HCV62():
 
 class Fan():
     def __init__(self, mode):
-        self.fun = tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "fun", mode)
+        self.fun = Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "fun", mode)
         self.current_fun = int(
-            tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "current_fun", mode))
-        self.K5PCV6CHSP = int(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV6CHSP", mode))
-        self.K5PCV6CHOP = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV6CHOP", mode))
-        self.K5PCV6CHMO = tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV6CHMO", mode)
+            Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "current_fun", mode))
+        self.K5PCV6CHSP = int(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV6CHSP", mode))
+        self.K5PCV6CHOP = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV6CHOP", mode))
+        self.K5PCV6CHMO = Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV6CHMO", mode)
         self.K5PCV6CHOP_task = float(
-            tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV65CHOP", mode))
+            Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV65CHOP", mode))
         self.speed = 1.11
 
     def automatic_adjustment(self, K5PCV6CH, K5F3):
@@ -706,8 +707,8 @@ class Fan():
 class K5TCV2():
     def __init__(self, mode):
         self.K5TCV2_task = float(
-            tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5TCV2", mode))
-        self.K5TCV2 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5TCV2", mode))
+            Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5TCV2", mode))
+        self.K5TCV2 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5TCV2", mode))
         self.speed = 1.11
 
     def mechanic_adjustment(self, K5TCV2_task):
@@ -732,8 +733,8 @@ class K5TCV2():
 class K5lCV1_1():
     def __init__(self, mode):
         self.K5LCV1_1_task = float(
-            tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5LCV1_1", mode))
-        self.K5LCV1_1 = float(tablreader.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5LCV1_1", mode))
+            Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5LCV1_1", mode))
+        self.K5LCV1_1 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5LCV1_1", mode))
         self.speed = 1.11
 
     def mechanic_adjustment(self, K5LCV1_1_task):

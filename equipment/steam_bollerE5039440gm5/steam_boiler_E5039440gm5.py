@@ -750,15 +750,27 @@ class K5lCV1_1_control():
 
     def open(self):
         if self.K5LCV1_1 + self.speed >= self.K5LCV1_1_task:
-            self.K5LCV1_1 = self.K5LCV1_1_task
+            if self.K5LCV1_1_task<100:
+                self.K5LCV1_1 = self.K5LCV1_1_task
+            else:
+                self.K5LCV1_1=100
         else:
-            self.K5LCV1_1 += self.speed
+            if self.K5LCV1_1 + self.speed<100:
+                self.K5LCV1_1 += self.speed
+            else:
+                self.K5LCV1_1=100
 
     def close(self):
         if self.K5LCV1_1 - self.speed <= self.K5LCV1_1_task:
-            self.K5LCV1_1 = self.K5LCV1_1_task
+            if self.K5LCV1_1_task>0:
+                self.K5LCV1_1 = self.K5LCV1_1_task
+            else:
+                self.K5LCV1_1=0
         else:
-            self.K5LCV1_1 -= self.speed
+            if self.K5LCV1_1 - self.speed>0:
+                self.K5LCV1_1 -= self.speed
+            else:
+                self.K5LCV1_1=0
 
 class K5LCV1_control():
     def __init__(self, K5LCV1):
@@ -795,15 +807,26 @@ class K5LCV1_control():
 
     def open(self):
         if self.K5LCV1 + self.speed >= self.K5LCV1_task:
-            self.K5LCV1 = self.K5LCV1_task
+            if self.K5LCV1_task<100:
+                self.K5LCV1 = self.K5LCV1_task
+            else:
+                self.K5LCV1=100
         else:
-            self.K5LCV1 += self.speed
+            if self.K5LCV1 + self.speed<100:
+                self.K5LCV1 += self.speed
+            else:
+                self.K5LCV1=100
 
     def close(self):
         if self.K5LCV1 - self.speed <= self.K5LCV1_task:
-            self.K5LCV1 = self.K5LCV1_task
+            if self.K5LCV1_task>0:
+                self.K5LCV1 = self.K5LCV1_task
+            else:
+                self.K5LCV1=0
         else:
-            self.K5LCV1 -= self.speed
+            if self.K5LCV1 - self.speed>0:
+                self.K5LCV1 -= self.speed
+            else:self.K5LCV1=0
 
 class K5PCV4_control():
     def __init__(self, K5PCV4):
@@ -822,12 +845,24 @@ class K5PCV4_control():
 
     def open(self):
         if self.K5PCV4 + self.speed >= self.K5PCV4_task:
-            self.K5PCV4 = self.K5PCV4_task
+            if self.K5PCV4_task < 100:
+                self.K5PCV4 = self.K5PCV4_task
+            else:
+                self.K5PCV4=100
         else:
-            self.K5PCV4 += self.speed
+            if self.K5PCV4 + self.speed<100:
+                self.K5PCV4 += self.speed
+            else:
+                self.K5PCV4 = 100
 
     def close(self):
         if self.K5PCV4 - self.speed <= self.K5PCV4_task:
-            self.K5PCV4 = self.K5PCV4_task
+            if self.K5PCV4_task>0:
+                self.K5PCV4 = self.K5PCV4_task
+            else:
+                self.K5PCV4=0
         else:
-            self.K5PCV4 -= self.speed
+            if self.K5PCV4 - self.speed>0:
+                self.K5PCV4 -= self.speed
+            else:
+                self.K5PCV4

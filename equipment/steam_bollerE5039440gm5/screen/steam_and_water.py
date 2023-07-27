@@ -22,8 +22,8 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    #TODO Оператор Выбора
     if request.method == 'POST':
-        # TODO Оператор Выбора
         K5LCV1_ans = request.form.get('K5LCV1_ans')
         if str(K5LCV1_ans) != "None":
             send_data("K5LCV1 " + str(K5LCV1_ans))

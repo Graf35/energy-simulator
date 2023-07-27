@@ -451,6 +451,7 @@ class Steam_boiler():
         entrance = {'K5BSB_2.PV': [self.K5BSB_2]}
         table_entrance = pd.DataFrame(data=entrance)
         self.K5Q3 = float(model.predict(table_entrance)[0][0])
+
     # TODO:Переобучит сеть в K5Q3
 
     def change_K5T15(self):

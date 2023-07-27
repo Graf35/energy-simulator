@@ -26,7 +26,7 @@
          <widget class="QLineEdit" name="rabbimq_main_server"/>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_8"/>
+         <widget class="QLineEdit" name="rabbimq_main_screen"/>
         </item>
         <item>
          <widget class="QLineEdit" name="lineEdit_12"/>
@@ -54,7 +54,7 @@
          <widget class="QLineEdit" name="rabbimq_main_server_value"/>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_7"/>
+         <widget class="QLineEdit" name="rabbimq_main_screen_value"/>
         </item>
         <item>
          <widget class="QLineEdit" name="lineEdit"/>

@@ -171,7 +171,7 @@ class Steam_boiler():
         # self.KK5TCV2=K5TCV2(mode)
         self.KK5LCV1 = K5LCV1_control(self.K5LCV1)
         self.KK5PCV4 = K5PCV4_control(self.K5PCV4)
-        # self.KK5TCV1_1 = K5TCV1_1(mode)
+        self.KK5LCV1_1 = K5lCV1_1_control(self.K5LCV1_1)
         self.K5F6x_excitement=0
         self.K5F5_excitement=0
         self.K5F3_excitement=0
@@ -521,8 +521,7 @@ class Steam_boiler():
 
     def change_K5F5(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5F5.sav'), 'rb'))
-        entrance = {'K5LCV1I.PV':[self.K5LCV1]}
-        entrance_1 = {'K5LCV1I.PV': [self.K5LCV1_1]}
+        entrance = {'K5LCV1I.PV':[self.K5LCV1+self.K5LCV1_1]}
         table_entrance = pd.DataFrame(data=entrance)
         self.K5F5= float(model.predict(table_entrance)[0][0])+self.K5F5_excitement
 
@@ -730,19 +729,23 @@ class K5TCV2():
         else:
             self.K5TCV2 -= self.speed
 
-class K5lCV1_1():
-    def __init__(self, mode):
-        self.K5LCV1_1_task = float(
-            Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5LCV1_1", mode))
-        self.K5LCV1_1 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5LCV1_1", mode))
+class K5lCV1_1_control():
+    def __init__(self, K5LCV1_1):
+        self.K5LCV1_1_task = K5LCV1_1
+        self.K5LCV1_1 = K5LCV1_1
         self.speed = 1.11
 
-    def mechanic_adjustment(self, K5LCV1_1_task):
-        self.K5LCV1_1_task = K5LCV1_1_task  # пробросить число от пользователя
+    def adjustment(self, K5LCV1_1_task=-101, level=0):
+        if K5LCV1_1_task != -101:
+            self.K5LCV1_1_task = K5LCV1_1_task
+        elif level != 0:
+            adjustment = level * 0.5
+            self.K5LCV1_1_task = self.K5LCV1_task + adjustment
         if self.K5LCV1_1_task > self.K5LCV1_1:
             self.open()
         elif self.K5LCV1_1_task < self.K5LCV1_1:
             self.close()
+        return self.K5LCV1_1
 
     def open(self):
         if self.K5LCV1_1 + self.speed >= self.K5LCV1_1_task:
@@ -762,12 +765,11 @@ class K5LCV1_control():
         self.K5LCV1 = K5LCV1
         self.speed = 1.11
 
-    def adjustment(self, K5LCV1_task = -101, level=0,):
+    def adjustment(self, K5LCV1_task = -101, level=0):
         if K5LCV1_task!= -101:
-            self.K5LCV1_task = K5LCV1_task  # пробросить число от пользователя
+            self.K5LCV1_task = K5LCV1_task
         elif level!=0:
             adjustment=level*0.5
-            # adjustment = self.regulate_pin(self.K5LCV1, level)
             self.K5LCV1_task=self.K5LCV1_task+adjustment
         if self.K5LCV1_task > self.K5LCV1:
             self.open()

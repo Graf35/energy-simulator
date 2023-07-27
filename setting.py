@@ -16,6 +16,8 @@ class Setting(QtWidgets.QMainWindow, ui):
         self.developer_mode_value.setText(self.config["developer_mode"])
         self.rabbimq_main_server.setText("Адрес сервера RabbitMQ")
         self.rabbimq_main_server_value.setText(self.config["rabbimq_main_server"])
+        self.rabbimq_main_screen.setText("Адрес сервера пользователя RabbitMQ")
+        self.rabbimq_main_screen_value.setText(self.config["rabbimq_main_screen"])
 
 
     def apply_button_clicked(self):

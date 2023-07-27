@@ -2,7 +2,7 @@
 from PyQt5 import QtWidgets
 from PyQt5 import  uic
 import Scripts
-import steam_bollerE5039440gm5_run
+from equipment.steam_bollerE5039440gm5 import steam_bollerE5039440gm5_run
 import asyncio
 import os
 import pika
@@ -31,19 +31,17 @@ class MaimWindow(QtWidgets.QMainWindow, ui):
     def start_button_clicked(self):
         try:
             if self.type_equipment.currentText() == 'E-50-440-3,9ГМ':
-                if self.equipment_mode.currentText()!='':
-                    self.window= steam_bollerE5039440gm5_run.Steam_bollerE5039440gm5(self.equipment_mode.currentText())
-                else:
+                if self.equipment_mode.currentText()=='':
                     logging.warning("Не выбран сценарий запуска оборудования")
+                asyncio.run(self.start_steam_bollerE5039440gm5())
+                logging.info("Запущено оборудование: котёл Е-50-3,9-440ГМ")
             else:
                 logging.warning("Не выбран тип оборудования")
-            asyncio.run(self.show_window())
-            logging.info("Запущено оборудование: котёл Е-50-3,9-440ГМ")
         except:
             logging.error("Ошибка запуска оборудования "+str(self.type_equipment.currentText()))
 
-    async def show_window(self):
-        self.window.show()
+    async def start_steam_bollerE5039440gm5(self):
+        self.window= steam_bollerE5039440gm5_run.Steam_bollerE5039440gm5(self.equipment_mode.currentText())
 
     def show_setting_window(self):
         self.deman = threading.Thread(target=self.setting_window.show())

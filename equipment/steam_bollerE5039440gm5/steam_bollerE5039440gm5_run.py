@@ -23,7 +23,6 @@ class Steam_bollerE5039440gm5():
         self.bolier = Steam_boiler(mode)
         self.run_deman = threading.Thread(target=self.run_boler, daemon=True)
         self.run_deman.start()
-        # asyncio.run(self.screen_start())
 
 
 
@@ -37,9 +36,13 @@ class Steam_bollerE5039440gm5():
             self.send_data("K5F5 "+str(round(self.bolier.K5F5,2)))
             self.bolier.change_K5T16()
             self.send_data("K5T16 " + str(round(self.bolier.K5T16, 2)))
-            self.bolier.change_K5T15()
-
             self.bolier.change_K5T17()
+            self.send_data("K5T17 " + str(round(self.bolier.K5T17, 2)))
+            self.bolier.change_K5P10()
+            self.send_data("K5P10 " + str(round(self.bolier.K5P10, 2)))
+            self.bolier.change_K5T6()
+            self.send_data("K5T6 " + str(round(self.bolier.K5T6, 2)))
+            self.bolier.change_K5T15()
             self.bolier.change_K5P10()
             self.drum_lavel()
             self.bolier.K5PCV4=self.bolier.KK5PCV4.adjustment()
@@ -62,9 +65,6 @@ class Steam_bollerE5039440gm5():
             self.bolier.KK5LCV1.adjustment(float(value))
         elif variable=="K5LCV1_1":
             self.bolier.KK5LCV1_1.adjustment(float(value))
-        # tag_to_func = {"K5LCV1":lambda value:self.bolier.KK5LCV1.adjustment(float(value)),
-        #                "K5LCV1_1":lambda value: self.bolier.KK5LCV1_1.adjustment(float(value))}
-        # tag_to_func[variable]
 
 
     # Callback-функция для обработки полученных сообщений

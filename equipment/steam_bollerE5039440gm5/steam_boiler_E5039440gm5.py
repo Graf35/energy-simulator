@@ -476,8 +476,7 @@ class Steam_boiler():
 
     def change_K5T6(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T6.sav'), 'rb'))
-        entrance = {'K5PS14_1.PV':[self.K5PS14_1],'K5PS14_2.PV':[self.K5PS14_2],'K5T6.PV':[self.K5T6],'K5P10.PV':[self.K5P10],
-                    'K5F5.PV':[self.K5F5],'K5F6X.PV':[self.K5F6X]}
+        entrance = {'K5F5.PV': [self.K5F5],"K5F6X.PV":[self.K5F6x], "K5T17.PV":[self.K5T17]}
         table_entrance = pd.DataFrame(data=entrance)
         self.K5T6= float(model.predict(table_entrance)[0][0])
 

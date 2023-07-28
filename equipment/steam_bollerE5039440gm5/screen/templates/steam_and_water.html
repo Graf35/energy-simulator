@@ -43,13 +43,27 @@
             position: absolute;
             left: 1550px;
             top: 1150px;
-            width: 30px;
         }
         #K5T16 {
             position: absolute;
             left: 1050px;
             top: 570px;
-            width: 30px;
+        }
+        #K5T17 {
+            position: absolute;
+            left: 1080px;
+            top: 65px;
+        }
+
+        #K5P10 {
+            position: absolute;
+            left: 765px;
+            top: 1150px;
+        }
+        #K5T6 {
+            position: absolute;
+            left: 860px;
+            top: 1060px;
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -87,6 +101,28 @@
               }
             });
 
+            $.ajax({
+              url: '/K5T17',
+              dataType: 'json', // Предполагаем, что данные ответа в формате JSON
+              success: function(data) {
+              $('#K5T17').text(data.K5T17);
+              }
+            });
+            $.ajax({
+              url: '/K5P10',
+              dataType: 'json', // Предполагаем, что данные ответа в формате JSON
+              success: function(data) {
+              $('#K5P10').text(data.K5P10);
+              }
+            });
+            $.ajax({
+              url: '/K5T6',
+              dataType: 'json', // Предполагаем, что данные ответа в формате JSON
+              success: function(data) {
+              $('#K5T6').text(data.K5T6);
+              }
+            });
+
               setTimeout(updateValues, 1000);
             }
 
@@ -103,6 +139,9 @@
 <p id="K5LCV1_1">0</p>
 <p id="K5F5">0</p>
 <p id="K5T16">0</p>
+<p id="K5T17">0</p>
+<p id="K5P10">0</p>
+<p id="K5T6">0</p>
 
 <form method="POST" action="/">
   <input type="text" id="K5LCV1_1_ans" name="K5LCV1_1_ans" onkeyup="handleKeyPress(event, 'K5LCV1_1_ans', 'K5LCV1_1')">

@@ -16,6 +16,9 @@ K5F5 = 0
 K5T16 = 0
 K5LCV1 = 0
 K5LCV1_1 = 0
+K5T17=0
+K5T6=0
+K5P10=0
 
 app = Flask(__name__)
 
@@ -55,6 +58,19 @@ def update_K5F5():
 def update_K5T16():
     text = str(K5T16)
     return jsonify(K5T16=text)
+
+@app.route('/K5T17')
+def update_K5T17():
+    text = str(K5T17)
+    return jsonify(K5T17=text)
+@app.route('/K5P10')
+def update_K5P10():
+    text = str(K5P10)
+    return jsonify(K5P10=text)
+@app.route('/K5T6')
+def update_K5T6():
+    text = str(K5T6)
+    return jsonify(K5T6=text)
 
 
 def process_data(data):

@@ -12,7 +12,9 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import MultiTaskLassoCV
 from sklearn.linear_model import Ridge
+from sklearn.linear_model import _base
 import seaborn as sns
+from sklearn import linear_model
 from scipy.stats import norm
 from scipy import stats
 from sklearn.linear_model import LinearRegression
@@ -20,7 +22,7 @@ from sklearn.metrics import mean_squared_error
 from sklearn import datasets, linear_model
 from sklearn.model_selection import cross_val_score
 import Scripts
-
+import scipy.integrate as spi
 
 class Steam_boiler():
 
@@ -90,14 +92,15 @@ class Steam_boiler():
         self.K5V12 = False
         self.K5F11 = False
         self.K5F5 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5F5", mode))
-        K5L2 = 0
-        K5P13 = 0
-        K5P13_1 = 0
+        self.K5L2 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5L2", mode))
+        self.K5P13 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P13", mode))
+        self.K5P13_1 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P13", mode))
         self.K5LCV1 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5LCV1", mode))
         self.K5LCV2=float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5LCV2", mode))
         self.K5LCV1_1 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5LCV1_1", mode))
         self.K5F6x = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5F6x", mode))
         self.K0P102_1 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K0P102_1", mode))
+        self.K5TCV2=float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5TCV2", mode))
         K0T104_2 = 0
         K5V1 = False
         K5V1_control = "M"
@@ -168,7 +171,7 @@ class Steam_boiler():
         # self.KK5HCV62 = K5HCV62(mode)
         # self.KK5HCV63 = K5HCV63(mode)
         # self.fun=Fan(mode)
-        # self.KK5TCV2=K5TCV2(mode)
+        self.KK5TCV2=K5TCV2_control(self.K5TCV2)
         self.KK5LCV1 = K5LCV1_control(self.K5LCV1)
         self.KK5PCV4 = K5PCV4_control(self.K5PCV4)
         self.KK5LCV1_1 = K5lCV1_1_control(self.K5LCV1_1)
@@ -179,6 +182,11 @@ class Steam_boiler():
         self.K5T15_excitement=0
         self.K5T16_excitement = 0
         self.K5T17_excitement = 0
+        self.K5P10_excitement = 0
+        self.K5T6_excitement=0
+        self.K5P8_excitement = 0
+        self.K5L2_excitement=0
+        self.K5T14_excitement = 0
 
     def change_K5T4(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T4.sav'), 'rb'))
@@ -298,7 +306,7 @@ class Steam_boiler():
         self.K5T18_1 = float(model.predict(table_entrance)[0][0])
 
     def change_K5T9_2(self):
-        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5P9_2.sav'), 'rb'))
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T9_2.sav'), 'rb'))
         entrance = {'K5T7.PV': [self.K5T7]}
         table_entrance = pd.DataFrame(data=entrance)
         quadratic = PolynomialFeatures(degree=3)
@@ -462,30 +470,40 @@ class Steam_boiler():
 
     def change_K5T3(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T3.sav'), 'rb'))
-        entrance = {'K5T14.PV':[self.K5T14],'K5TCV2I.PV':[self.K5TCV2I],'K5F6X.PV':[self.K5F6X],'K5T15.PV':[self.K5T15],
-                    'K5P8.PV':[self.K5P8]}
+        entrance = {'K5TCV2I.PV':[self.K5TCV2]}
+        cube = PolynomialFeatures(degree=3)
         table_entrance = pd.DataFrame(data=entrance)
-        self.K5T3= float(model.predict(table_entrance)[0][0])
+        F3= float(model.predict(cube.fit_transform(table_entrance))[0][0])
+        H_steam=2800+2.5*(self.K5T14-250)
+        def cp_water(T):
+            cp = 4.18
+            return cp
+        T_start = 298
+        T_end = self.K5T15 + 273
+        integral_result, error = spi.quad(cp_water, T_start, T_end)
+        H_298 = 108.53  # Заполните соответствующее значение начальной энтальпии при 298 K
+        H_water = H_298 + integral_result
+        H_out=(H_steam*(self.K5F6x*0.278)-H_water*((F3-4)*0.278))/(self.K5F6x*0.278)
+        self.K5T3=(((H_out-2800)/4.18+250+273)-273)
 
     def change_K5T14(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T14.sav'), 'rb'))
-        entrance = {'K5PS14_1.PV':[self.K5PS14_1],'K5PS14_2.PV':[self.K5PS14_2],'K5T6.PV':[self.K5T6],'K5P10.PV':[self.K5P10],
-                    'K5F5.PV':[self.K5F5],'K5F6X.PV':[self.K5F6X]}
+        entrance = {'K5PS14_1.PV':[self.K5PS14_1],'K5PS14_2.PV':[self.K5PS14_2],'K5F6X.PV':[self.K5F6x]}
         table_entrance = pd.DataFrame(data=entrance)
-        self.K5T14= float(model.predict(table_entrance)[0][0])
+        self.K5T14= float(model.predict(table_entrance)[0][0])+self.K5T14_excitement
 
     def change_K5T6(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T6.sav'), 'rb'))
         entrance = {'K5F5.PV': [self.K5F5],"K5F6X.PV":[self.K5F6x], "K5T17.PV":[self.K5T17]}
         table_entrance = pd.DataFrame(data=entrance)
-        self.K5T6= float(model.predict(table_entrance)[0][0])
+        self.K5T6= float(model.predict(table_entrance)[0][0])+self.K5T6_excitement
 
     def change_K5P10(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5P10.sav'), 'rb'))
         entrance = {'K5PS14_2.PV':[self.K5PS14_2]}
         quadratic = PolynomialFeatures(degree=2)
         table_entrance = pd.DataFrame(data=entrance)
-        self.K5P10= float(model.predict(quadratic.fit_transform(table_entrance))[0][0])
+        self.K5P10= float(model.predict(quadratic.fit_transform(table_entrance))[0][0])+self.K5P10_excitement
 
     def change_K5T16(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T16.sav'), 'rb'))
@@ -505,13 +523,13 @@ class Steam_boiler():
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5P8.sav'), 'rb'))
         entrance = {'K5PS14_1.PV':[self.K5PS14_1]}
         table_entrance = pd.DataFrame(data=entrance)
-        self.K5P8= float(model.predict(table_entrance)[0][0])
+        self.K5P8= float(model.predict(table_entrance)[0][0])+self.K5P8_excitement
 
     def change_K5T2_1(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T2_1.sav'), 'rb'))
         entrance = {'K5T3.PV':[self.K5T3]}
         table_entrance = pd.DataFrame(data=entrance)
-        self.K52_1= float(model.predict(table_entrance)[0][0])
+        self.K5T2_1= float(model.predict(table_entrance)[0][0])
 
     def change_K5T2_2(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T2_2.sav'), 'rb'))
@@ -530,6 +548,12 @@ class Steam_boiler():
         entrance = {'K5PCV4I.PV':[self.K5PCV4]}
         table_entrance = pd.DataFrame(data=entrance)
         self.K5F3= float(model.predict(table_entrance)[0][0])+self.K5F3_excitement
+
+    def change_K5L2(self):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5L2.sav'), 'rb'))
+        entrance = {'K5T3.PV':[self.K5T3], 'K5TCV2I.PV':[self.K5TCV2]}
+        table_entrance = pd.DataFrame(data=entrance)
+        self.K5L2= float(model.predict(table_entrance)[0][0])+self.K5L2_excitement
 
     def change_K5F6x(self):
         self.K5F6x=self.K5F3/100+self.K5F6x_excitement
@@ -703,31 +727,45 @@ class Fan():
         else:
             self.K5PCV6CHOP -= self.speed
 
-class K5TCV2():
-    def __init__(self, mode):
-        self.K5TCV2_task = float(
-            Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5TCV2", mode))
-        self.K5TCV2 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5TCV2", mode))
+class K5TCV2_control():
+    def __init__(self, K5TCV2):
+        self.K5TCV2_task = K5TCV2
+        self.K5TCV2 = K5TCV2
         self.speed = 1.11
 
-    def mechanic_adjustment(self, K5TCV2_task):
-        self.K5TCV2_task = K5TCV2_task  # пробросить число от пользователя
+    def adjustment(self, K5TCV2_task=-101):
+        if K5TCV2_task!=-101:
+            self.K5TCV2_task=K5TCV2_task
+
         if self.K5TCV2_task > self.K5TCV2:
             self.open()
         elif self.K5TCV2_task < self.K5TCV2:
             self.close()
+        return self.K5TCV2
 
     def open(self):
-        if self.K5TCV2 + self.speed >= self.K5PCV5_task:
-            self.K5TCV2 = self.K5TCV2_task
+        if self.K5TCV2 + self.speed >= self.K5TCV2_task:
+            if self.K5TCV2_task<100:
+                self.K5TCV2 = self.K5TCV2_task
+            else:
+                self.K5TCV2=100
         else:
-            self.K5TCV2 += self.speed
+            if self.K5TCV2 +self.speed<100:
+                self.K5TCV2 += self.speed
+            else:
+                self.K5TCV2=100
 
     def close(self):
         if self.K5TCV2 - self.speed <= self.K5TCV2_task:
-            self.K5TCV2 = self.K5TCV2_task
+            if self.K5TCV2_task>0:
+                self.K5TCV2 = self.K5TCV2_task
+            else:
+                self.K5TCV2=0
         else:
-            self.K5TCV2 -= self.speed
+            if self.K5TCV2 - self.speed>0:
+                self.K5TCV2 -= self.speed
+            else:
+                self.K5TCV2=0
 
 class K5lCV1_1_control():
     def __init__(self, K5LCV1_1):

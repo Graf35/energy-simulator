@@ -43,7 +43,23 @@ class Steam_bollerE5039440gm5():
             self.bolier.change_K5T6()
             self.send_data("K5T6 " + str(round(self.bolier.K5T6, 2)))
             self.bolier.change_K5T15()
-            self.bolier.change_K5P10()
+            self.send_data("K5T15 " + str(round(self.bolier.K5T15, 2)))
+            self.bolier.change_K5P8()
+            self.send_data("K5P8 " + str(round(self.bolier.K5P8, 2)))
+            self.bolier.change_K5L2()
+            self.send_data("K5L2 " + str(round(self.bolier.K5L2, 2)))
+            self.bolier.K5TCV2 = self.bolier.KK5TCV2.adjustment()
+            self.send_data("K5TCV2 " + str(round(self.bolier.K5TCV2, 2)))
+            self.bolier.change_K5T14()
+            self.send_data("K5T14 " + str(round(self.bolier.K5T14, 2)))
+            self.bolier.change_K5T3()
+            self.send_data("K5T3 " + str(round(self.bolier.K5T3, 2)))
+            self.bolier.change_K5T2_1()
+            self.send_data("K5T2_1 " + str(round(self.bolier.K5T2_1, 2)))
+            self.bolier.change_K5T2_2()
+            self.send_data("K5T2_2 " + str(round(self.bolier.K5T2_2, 2)))
+            self.bolier.change_K5T2_1()
+            self.send_data("K5T2_1 " + str(round(self.bolier.K5T2_1, 2)))
             self.drum_lavel()
             self.bolier.K5PCV4=self.bolier.KK5PCV4.adjustment()
             self.bolier.change_K5F3()
@@ -55,16 +71,16 @@ class Steam_bollerE5039440gm5():
         self.bolier.K5L1_1+=(((self.bolier.K5F5-K5F5)))+self.bolier.K5L1_1_excitement
 
     def send_data(self, data):
-        # Отправка данных в RabbitMQ
         self.channel.basic_publish(exchange='', routing_key='data_queue', body=str(data))
 
     def process_data(self, data):
         variable, value = data.split()
-        # TODO Оператор Выбора
         if variable=="K5LCV1":
             self.bolier.KK5LCV1.adjustment(float(value))
         elif variable=="K5LCV1_1":
             self.bolier.KK5LCV1_1.adjustment(float(value))
+        elif variable=="K5TCV2":
+            self.bolier.KK5TCV2.adjustment(float(value))
 
 
     # Callback-функция для обработки полученных сообщений
@@ -77,7 +93,3 @@ class Steam_bollerE5039440gm5():
 
     async def screen_start(self):
         os.system('python equipment/steam_bollerE5039440gm5/screen/steam_and_water.py')
-    def __del__(self):
-        # Закрытие соединения с RabbitMQ
-        self.connection.close()
-        self.connection2.close()

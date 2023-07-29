@@ -19,6 +19,14 @@ K5LCV1_1 = 0
 K5T17=0
 K5T6=0
 K5P10=0
+K5P8=0
+K5P15=0
+K5L2=0
+K5TCV2=0
+K5T14=0
+K5T3=0
+K5T2_1=0
+K5T2_2=0
 
 app = Flask(__name__)
 
@@ -33,6 +41,9 @@ def index():
         K5LCV1_1_ans = request.form.get('K5LCV1_1_ans')
         if str(K5LCV1_1_ans) != "None":
             send_data("K5LCV1_1 " + str(K5LCV1_1_ans))
+        K5TCV2_ans = request.form.get('K5TCV2_ans')
+        if str(K5TCV2_ans) != "None":
+            send_data("K5TCV2 " + str(K5TCV2_ans))
     return render_template('steam_and_water.html')
 
 
@@ -71,7 +82,41 @@ def update_K5P10():
 def update_K5T6():
     text = str(K5T6)
     return jsonify(K5T6=text)
+@app.route('/K5P8')
+def update_K5P8():
+    text = str(K5P8)
+    return jsonify(K5P8=text)
+@app.route('/K5T15')
+def update_K5T15():
+    text = str(K5T15)
+    return jsonify(K5T15=text)
 
+@app.route('/K5L2')
+def update_K5L2():
+    text = str(K5L2)
+    return jsonify(K5L2=text)
+@app.route('/K5TCV2')
+def update_K5TCV2():
+    text = str(K5TCV2)
+    return jsonify(K5TCV2=text)
+@app.route('/K5T14')
+def update_K5T14():
+    text = str(K5T14)
+    return jsonify(K5T14=text)
+@app.route('/K5T3')
+def update_K5T3():
+    text = str(K5T3)
+    return jsonify(K5T3=text)
+
+@app.route('/K5T2_1')
+def update_K5T2_1():
+    text = str(K5T2_1)
+    return jsonify(K5T2_1=text)
+
+@app.route('/K5T2_2')
+def update_K5T2_2():
+    text = str(K5T2_2)
+    return jsonify(K5T2_2=text)
 
 def process_data(data):
     variable, value = data.split()

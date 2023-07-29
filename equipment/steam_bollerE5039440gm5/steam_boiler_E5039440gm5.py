@@ -101,7 +101,7 @@ class Steam_boiler():
         self.K5F6x = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5F6x", mode))
         self.K0P102_1 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K0P102_1", mode))
         self.K5TCV2=float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5TCV2", mode))
-        K0T104_2 = 0
+        self.K0T104_2 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K0T104_2", mode))
         K5V1 = False
         K5V1_control = "M"
         K5V2 = False
@@ -116,11 +116,11 @@ class Steam_boiler():
         K5FCV4_2_task = 0
         K5FCV4_2_apass = False
         K5FCV4_2_control = "M"
-        K5Q2_1 = 0
-        K5Q2_2 = 0
-        K5P4_1 = 0
+        self.K5Q2_1 = 0
+        self.K5Q2_2 = 0
+        self.K5P4_1 = 0
         K5P4_1_select = True
-        K5P4_2 = 0
+        self.K5P4_2 = 0
         K5P4_2_select = True
         K5V28 = False
         K5HCV53 = False
@@ -133,10 +133,10 @@ class Steam_boiler():
         K5PCV4_mode = "M"
         K5P23 = 0
         K5P24 = 0
-        K5Q3 = 0
-        K5P6_1 = 0
+        self.K5Q3 = 0
+        self.K5P6_1 = 0
         K5P6_1_select = True
-        K5P6_2 = 0
+        self.K5P6_2 = 0
         K5P6_2_select = False
         K0P125 = 0
         K5HCV27_1 = True
@@ -147,25 +147,25 @@ class Steam_boiler():
         K5V51_1 = False
         K5PCV17_1 = 0
         K5PCV17_1_task = 0
-        K5P17_1 = 0
+        self.K5P17_1 = 0
         K5HCV50_2 = False
         K5V51_2 = False
         K5PCV17_2 = 0
         K5PCV17_2_task = 0
-        K5P17_2 = 0
+        self.K5P17_2 = 0
         K5HCV50 = False
         K5HCV51 = False
         igniter_1 = False
         igniter_2 = False
         burner_1 = False
         burner_2 = False
-        K5P16_1 = 0
-        K5P16_2 = 0
+        self.K5P16_1 = 0
+        self.K5P16_2 = 0
         K5HCV60 = 0
         K5HCV60_task = 0
         K5HCV61 = 0
         K5HCV61_task = 0
-        K5T12 = 0
+        self.K5T12 = 0
         # self.Ksmoke_pump = Smoke_pump(mode)
         # self.KK5PCV5 = K5PCV5(mode)
         # self.KK5HCV62 = K5HCV62(mode)
@@ -187,6 +187,10 @@ class Steam_boiler():
         self.K5P8_excitement = 0
         self.K5L2_excitement=0
         self.K5T14_excitement = 0
+        self.K0T104_2_excitement = 0
+        self.K0P102_1_excitement = 0
+        self.K5P13_excitement=0
+        self.K5P13_1_excitement=0
 
     def change_K5T4(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T4.sav'), 'rb'))
@@ -565,6 +569,34 @@ class Steam_boiler():
         quadratic = PolynomialFeatures(degree=2)
         out=(float(model.predict(quadratic.fit_transform(table_entrance))[0][0]))
         return out
+
+    def change_K0P102_1(self):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K0P102_1.sav'), 'rb'))
+        entrance = {'K5PS14_1.PV':[self.K5PS14_1]}
+        table_entrance = pd.DataFrame(data=entrance)
+        self.K0P102_1= float(model.predict(table_entrance)[0][0])+self.K0P102_1_excitement
+
+    def change_K0T104_2(self):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K0T104_2.sav'), 'rb'))
+        entrance = {'K5T2_1.PV':[self.K5T2_1]}
+        table_entrance = pd.DataFrame(data=entrance)
+        self.K0T104_2= float(model.predict(table_entrance)[0][0])+self.K0T104_2_excitement
+
+    def change_K5P13(self):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5P13.sav'), 'rb'))
+        entrance = {'K5P6.PV':[self.K5P6_1],'K5P17_1.PV':[self.K5P17_1], 'K5P17_2.PV':[self.K5P17_1], 'K5F3.PV':[self.K5F3],
+                    'K5PCV4I.PV':[self.K5PCV4], 'K5T12.PV':[self.K5T12] ,
+             'K5P16_1.PV':[self.K5P16_1], 'K5P16_2.PV':[self.K5P16_2], 'K5Q2_1.PV':[self.K5Q2_1], 'K5P4_1.PV':[self.K5P4_1]}
+        table_entrance = pd.DataFrame(data=entrance)
+        self.K5P13= float(model.predict(table_entrance)[0][0])+self.K5P13_excitement
+
+    def change_K5P13_1(self):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5P13.sav'), 'rb'))
+        entrance = {'K5P6.PV':[self.K5P6_1],'K5P17_1.PV':[self.K5P17_1], 'K5P17_2.PV':[self.K5P17_1], 'K5F3.PV':[self.K5F3],
+                    'K5PCV4I.PV':[self.K5PCV4], 'K5T12.PV':[self.K5T12] ,
+             'K5P16_1.PV':[self.K5P16_1], 'K5P16_2.PV':[self.K5P16_2], 'K5Q2_1.PV':[self.K5Q2_1], 'K5P4_1.PV':[self.K5P4_1]}
+        table_entrance = pd.DataFrame(data=entrance)
+        self.K5P13_1= float(model.predict(table_entrance)[0][0])+self.K5P13_1_excitement+0.5
 
 
 

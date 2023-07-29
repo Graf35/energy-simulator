@@ -27,6 +27,11 @@ K5T14=0
 K5T3=0
 K5T2_1=0
 K5T2_2=0
+K0P102_1=0
+K0T104_2=0
+K5F6x=0
+K5P13=0
+K5P13_1=0
 
 app = Flask(__name__)
 
@@ -117,6 +122,26 @@ def update_K5T2_1():
 def update_K5T2_2():
     text = str(K5T2_2)
     return jsonify(K5T2_2=text)
+@app.route('/K0P102_1')
+def update_K0P102_1():
+    text = str(K0P102_1)
+    return jsonify(K0P102_1=text)
+@app.route('/K0T104_2')
+def update_K0T104_2():
+    text = str(K0T104_2)
+    return jsonify(K0T104_2=text)
+@app.route('/K5F6x')
+def update_K5F6x():
+    text = str(K5F6x)
+    return jsonify(K5F6x=text)
+@app.route('/K5P13')
+def update_K5P13():
+    text = str(K5P13)
+    return jsonify(K5P13=text)
+@app.route('/K5P13_1')
+def update_K5P13_1():
+    text = str(K5P13_1)
+    return jsonify(K5P13_1=text)
 
 def process_data(data):
     variable, value = data.split()

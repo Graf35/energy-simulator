@@ -45,16 +45,16 @@ K5L1_1_select;False;False;True;True;True;True
 K5L1_2_connection;False;False;True;True;True;True
 K5L1_2;-350;-350;0;2.842875;1.472625;5.106938
 K5L1_2_select;False;False;False;False;False;False
-5L1_3_connection ;False;False;True;True;True;True
+K5L1_3_connection ;False;False;True;True;True;True
 K5L1_3;-350;-350;0;0.7973437;-1.775813;1.187156
 K5L1_3_select;False;False;False;False;False;False
 K5L1_4_connection;False;False;True;True;True;True
 K5L1_4;-350;-350;313;313.8109;313.0332;313.5431
 K5L1_4_select;False;False;False;False;False;False
-k5P5_1_select;False;False;True;True;True;True
-k5P5_1;0;0;-40;-38.43516;-40.80469;-37.88203
-k5P5_2_select;False;False;False;False;False;False
-k5P5_2;0;0;-40;-38.71953;-43.36016;-33.68906
+K5P5_1_select;False;False;True;True;True;True
+K5P5_1;0;0;-40;-38.43516;-40.80469;-37.88203
+K5P5_2_select;False;False;False;False;False;False
+K5P5_2;0;0;-40;-38.71953;-43.36016;-33.68906
 K5Q3;0;0;0;1;1;1
 K5T17;20;20;108.867;119.2897;119.3264;133.0248
 K5T3;20;20;197.0462;197.4673;201.7075;187.6385

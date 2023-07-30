@@ -93,7 +93,7 @@
         }
         #K5T14 {
             position: absolute;
-            left: 653px;
+            left: 647px;
             top: 758px;
         }
         #K5T3 {
@@ -135,6 +135,51 @@
             position: absolute;
             left: 1480px;
             top: 300px;
+        }
+        #K5PS14_1 {
+            position: absolute;
+            left: 70px;
+            top: 50px;
+        }
+        #K5PS14_2 {
+            position: absolute;
+            left: 70px;
+            top: 120px;
+        }
+        #K5P5_2 {
+            position: absolute;
+            left: 255px;
+            top: 700px;
+        }
+        #K5P5_1 {
+            position: absolute;
+            left: 390px;
+            top: 700px;
+        }
+        #K5Q3 {
+            position: absolute;
+            left: 565px;
+            top: 970px;
+        }
+        #K5L1_1 {
+            position: absolute;
+            left: 210px;
+            top: 170px;
+        }
+        #K5L1_2 {
+            position: absolute;
+            left: 340px;
+            top: 170px;
+        }
+        #K5L1_3 {
+            position: absolute;
+            left: 460px;
+            top: 170px;
+        }
+        #K5L1_4 {
+            position: absolute;
+            left: 590px;
+            top: 170px;
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -285,6 +330,70 @@
               }
             });
 
+            $.ajax({
+              url: '/K5PS14_1',
+              dataType: 'json', // Предполагаем, что данные ответа в формате JSON
+              success: function(data) {
+              $('#K5PS14_1').text(data.K5PS14_1);
+              }
+            });
+            $.ajax({
+              url: '/K5PS14_2',
+              dataType: 'json', // Предполагаем, что данные ответа в формате JSON
+              success: function(data) {
+              $('#K5PS14_2').text(data.K5PS14_2);
+              }
+            });
+            $.ajax({
+              url: '/K5P5_2',
+              dataType: 'json', // Предполагаем, что данные ответа в формате JSON
+              success: function(data) {
+              $('#K5P5_2').text(data.K5P5_2);
+              }
+            });
+            $.ajax({
+              url: '/K5P5_1',
+              dataType: 'json', // Предполагаем, что данные ответа в формате JSON
+              success: function(data) {
+              $('#K5P5_1').text(data.K5P5_1);
+              }
+            });
+            $.ajax({
+              url: '/K5Q3',
+              dataType: 'json', // Предполагаем, что данные ответа в формате JSON
+              success: function(data) {
+              $('#K5Q3').text(data.K5Q3);
+              }
+            });
+            $.ajax({
+              url: '/K5L1_1',
+              dataType: 'json', // Предполагаем, что данные ответа в формате JSON
+              success: function(data) {
+              $('#K5L1_1').text(data.K5L1_1);
+              }
+            });
+            $.ajax({
+              url: '/K5L1_2',
+              dataType: 'json', // Предполагаем, что данные ответа в формате JSON
+              success: function(data) {
+              $('#K5L1_2').text(data.K5L1_2);
+              }
+            });
+            $.ajax({
+              url: '/K5L1_3',
+              dataType: 'json', // Предполагаем, что данные ответа в формате JSON
+              success: function(data) {
+              $('#K5L1_3').text(data.K5L1_3);
+              }
+            });
+            $.ajax({
+              url: '/K5L1_4',
+              dataType: 'json', // Предполагаем, что данные ответа в формате JSON
+              success: function(data) {
+              $('#K5L1_4').text(data.K5L1_4);
+              }
+            });
+
               setTimeout(updateValues, 1000);
             }
 
@@ -317,8 +426,15 @@
 <p id="K5F6x">0</p>
 <p id="K5P13">0</p>
 <p id="K5P13_1">0</p>
-
-
+<p id="K5PS14_1">0</p>
+<p id="K5PS14_2">0</p>
+<p id="K5P5_2">0</p>
+<p id="K5P5_1">0</p>
+<p id="K5Q3">0</p>
+<p id="K5L1_1">0</p>
+<p id="K5L1_2">0</p>
+<p id="K5L1_3">0</p>
+<p id="K5L1_4">0</p>
 <form method="POST" action="/">
   <input type="text" id="K5LCV1_1_ans" name="K5LCV1_1_ans" onkeyup="handleKeyPress(event, 'K5LCV1_1_ans', 'K5LCV1_1')">
 </form>

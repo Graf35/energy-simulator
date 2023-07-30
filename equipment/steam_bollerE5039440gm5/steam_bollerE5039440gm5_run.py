@@ -20,9 +20,11 @@ class Steam_bollerE5039440gm5():
         self.channel2.queue_declare(queue='boiler_data')
         self.listening_deman = threading.Thread(target=self.listening_queue, daemon=True)
         self.listening_deman.start()
+        self.listening_queue
         self.bolier = Steam_boiler(mode)
         self.run_deman = threading.Thread(target=self.run_boler, daemon=True)
         self.run_deman.start()
+
 
 
 
@@ -68,8 +70,21 @@ class Steam_bollerE5039440gm5():
             self.send_data("K5P13 " + str(round(self.bolier.K5P13, 2)))
             self.bolier.change_K5P13_1()
             self.send_data("K5P13_1 " + str(round(self.bolier.K5P13_1, 2)))
-
+            self.bolier.change_K5PS14_1()
+            self.send_data("K5PS14_1 " + str(round(self.bolier.K5PS14_1, 2)))
+            self.bolier.change_K5PS14_2()
+            self.send_data("K5PS14_2 " + str(round(self.bolier.K5PS14_2, 2)))
+            self.bolier.change_K5P5_2()
+            self.send_data("K5P5_2 " + str(round(self.bolier.K5P5_2, 2)))
+            self.bolier.change_K5P5_1()
+            self.send_data("K5P5_1 " + str(round(self.bolier.K5P5_1, 2)))
+            self.bolier.change_K5Q3()
+            self.send_data("K5Q3 " + str(round(self.bolier.K5Q3, 2)))
             self.drum_lavel()
+            self.send_data("K5L1_1 " + str(round(self.bolier.K5L1_1, 2)))
+            self.send_data("K5L1_2 " + str(round(self.bolier.K5L1_2, 2)))
+            self.send_data("K5L1_3 " + str(round(self.bolier.K5L1_3, 2)))
+            self.send_data("K5L1_4 " + str(round(self.bolier.K5L1_4, 2)))
             self.bolier.K5PCV4=self.bolier.KK5PCV4.adjustment()
             self.bolier.change_K5F3()
             self.bolier.change_K5F6x()
@@ -77,7 +92,10 @@ class Steam_bollerE5039440gm5():
 
     def drum_lavel(self):
         K5F5=self.bolier.change_K5L1_1()
-        self.bolier.K5L1_1+=(((self.bolier.K5F5-K5F5)))+self.bolier.K5L1_1_excitement
+        self.bolier.K5L1_1+=((0.0125*(self.bolier.K5F5-K5F5)**3))+self.bolier.K5L1_1_excitement
+        self.bolier.K5L1_2 += ((0.125 * (self.bolier.K5F5 - K5F5) ** 3)) + self.bolier.K5L1_2_excitement
+        self.bolier.K5L1_3 += ((0.125 * (self.bolier.K5F5 - K5F5) ** 3)) + self.bolier.K5L1_3_excitement
+        self.bolier.K5L1_4 += ((0.125 * (self.bolier.K5F5 - K5F5) ** 3)) + self.bolier.K5L1_4_excitement
 
     def send_data(self, data):
         self.channel.basic_publish(exchange='', routing_key='data_queue', body=str(data))
@@ -97,8 +115,19 @@ class Steam_bollerE5039440gm5():
         self.process_data(body.decode())
 
     def listening_queue(self):
-        self.channel2.basic_consume(queue='boiler_data', on_message_callback=self.callback, auto_ack=True)
-        self.channel2.start_consuming()
+        try:
+            self.channel2.basic_consume(queue='boiler_data', on_message_callback=self.callback, auto_ack=True)
+            self.channel2.start_consuming()
+        except:
+            logging.error("Ошибка прослуживания очереди")
+            self.connection2 = pika.BlockingConnection(
+                pika.ConnectionParameters(host=self.config["rabbimq_main_server"]))
+            self.channel2 = self.connection.channel()
+            self.channel2.queue_declare(queue='boiler_data')
+            self.listening_deman = threading.Thread(target=self.listening_queue, daemon=True)
+            self.listening_deman.start()
+            self.channel2.basic_consume(queue='boiler_data', on_message_callback=self.callback, auto_ack=True)
+            self.channel2.start_consuming()
 
     async def screen_start(self):
         os.system('python equipment/steam_bollerE5039440gm5/screen/steam_and_water.py')

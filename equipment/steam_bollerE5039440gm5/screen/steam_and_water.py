@@ -12,27 +12,6 @@ connection = pika.BlockingConnection(pika.ConnectionParameters(host=config["rabb
 channel = connection.channel()
 channel.queue_declare(queue='data_queue')
 
-K5F5 = 0
-K5T16 = 0
-K5LCV1 = 0
-K5LCV1_1 = 0
-K5T17=0
-K5T6=0
-K5P10=0
-K5P8=0
-K5P15=0
-K5L2=0
-K5TCV2=0
-K5T14=0
-K5T3=0
-K5T2_1=0
-K5T2_2=0
-K0P102_1=0
-K0T104_2=0
-K5F6x=0
-K5P13=0
-K5P13_1=0
-
 app = Flask(__name__)
 
 
@@ -142,6 +121,42 @@ def update_K5P13():
 def update_K5P13_1():
     text = str(K5P13_1)
     return jsonify(K5P13_1=text)
+@app.route('/K5PS14_1')
+def update_K5PS14_1():
+    text = str(K5PS14_1)
+    return jsonify(K5PS14_1=text)
+@app.route('/K5PS14_2')
+def update_K5PS14_2():
+    text = str(K5PS14_2)
+    return jsonify(K5PS14_2=text)
+@app.route('/K5P5_2')
+def update_K5P5_2():
+    text = str(K5P5_2)
+    return jsonify(K5P5_2=text)
+@app.route('/K5P5_1')
+def update_K5P5_1():
+    text = str(K5P5_1)
+    return jsonify(K5P5_1=text)
+@app.route('/K5Q3')
+def update_K5Q3():
+    text = str(K5Q3)
+    return jsonify(K5Q3=text)
+@app.route('/K5L1_1')
+def update_K5L1_1():
+    text = str(K5L1_1)
+    return jsonify(K5L1_1=text)
+@app.route('/K5L1_2')
+def update_K5L1_2():
+    text = str(K5L1_2)
+    return jsonify(K5L1_2=text)
+@app.route('/K5L1_3')
+def update_K5L1_3():
+    text = str(K5L1_3)
+    return jsonify(K5L1_3=text)
+@app.route('/K5L1_4')
+def update_K5L1_4():
+    text = str(K5L1_4)
+    return jsonify(K5L1_4=text)
 
 def process_data(data):
     variable, value = data.split()

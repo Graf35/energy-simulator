@@ -7,7 +7,7 @@ import logging
 from Log import Deman_log
 
 logger = Deman_log()
-config = Scripts.filereader("config.config")
+config = Scripts.filereader("../../../config.config")
 connection = pika.BlockingConnection(pika.ConnectionParameters(host=config["rabbimq_main_screen"]))
 channel = connection.channel()
 channel.queue_declare(queue='data_queue')

@@ -20,7 +20,7 @@ class Steam_bollerE5039440gm5():
         # Слушаем входящие соединения
         self.server_socket.listen()
         # Принимаем входящее соединение от клиента
-        self.client_socket, client_address = self.server_socket.accept()
+        # self.client_socket, client_address = self.server_socket.accept()
         logging.info("Соединение установлено с клиентом: "+ str(client_address))
         self.bolier = Steam_boiler(mode)
         listening_deman = threading.Thread(target=self.anser_data, daemon=True)
@@ -31,6 +31,10 @@ class Steam_bollerE5039440gm5():
 
     def run_boler(self):
         while True:
+            self.client_socket, addr = self.server_socket.accept()
+            logging.info(f"Accepted connection from {addr[0]}:{addr[1]}")
+            client_thread = threading.Thread(target=self.handle_client, args=(self.client_socket,))
+            client_thread.start()
             self.bolier.K5LCV1 = self.bolier.KK5LCV1.adjustment()
             self.data_append("K5LCV1 " + str(round(self.bolier.K5LCV1, 2)))
             self.bolier.K5LCV1_1=self.bolier.KK5LCV1_1.adjustment()
@@ -120,6 +124,13 @@ class Steam_bollerE5039440gm5():
                 self.bolier.KK5LCV1_1.adjustment(float(value))
             elif variable=="K5TCV2":
                 self.bolier.KK5TCV2.adjustment(float(value))
+
+    def handle_client(self, client_socket):
+        # обработка входящего соединения
+        request = self.client_socket.recv(1024)
+        logging.info(f"Received: {request}")
+        self.client_socket.send(b"ACK")
+        self.client_socket.close()
 
     async def screen_start(self):
         os.system('python equipment/steam_bollerE5039440gm5/screen/steam_and_water.py')

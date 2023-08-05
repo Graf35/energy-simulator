@@ -9,7 +9,7 @@ import time
 
 
 logger = Deman_log()
-config = Scripts.filereader("../../../config.config")
+config = Scripts.filereader("config.config")
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect((config["steam_and_water_screen"], int(config["steam_and_water_screen_port"])))
 

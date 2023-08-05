@@ -23,16 +23,16 @@
          <widget class="QLineEdit" name="developer_mode"/>
         </item>
         <item>
-         <widget class="QLineEdit" name="rabbimq_main_server"/>
+         <widget class="QLineEdit" name="main_server"/>
         </item>
         <item>
-         <widget class="QLineEdit" name="rabbimq_main_screen"/>
+         <widget class="QLineEdit" name="main_server_port"/>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_12"/>
+         <widget class="QLineEdit" name="steam_and_water_screen"/>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_6"/>
+         <widget class="QLineEdit" name="steam_and_water_screen_port"/>
         </item>
         <item>
          <widget class="QLineEdit" name="lineEdit_14"/>
@@ -51,16 +51,16 @@
          <widget class="QLineEdit" name="developer_mode_value"/>
         </item>
         <item>
-         <widget class="QLineEdit" name="rabbimq_main_server_value"/>
+         <widget class="QLineEdit" name="main_server_value"/>
         </item>
         <item>
-         <widget class="QLineEdit" name="rabbimq_main_screen_value"/>
+         <widget class="QLineEdit" name="main_server_port_value"/>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit"/>
+         <widget class="QLineEdit" name="steam_and_water_screen_value"/>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_9"/>
+         <widget class="QLineEdit" name="steam_and_water_screen_port_value"/>
         </item>
         <item>
          <widget class="QLineEdit" name="lineEdit_13"/>

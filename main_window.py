@@ -4,9 +4,6 @@ from PyQt5 import  uic
 import Scripts
 from equipment.steam_bollerE5039440gm5 import steam_bollerE5039440gm5_run
 import asyncio
-import os
-import pika
-import webbrowser
 import setting
 import threading
 import logging
@@ -25,7 +22,6 @@ class MaimWindow(QtWidgets.QMainWindow, ui):
         self.setting.triggered.connect(self.show_setting_window)
         self.setting_window=setting.Setting()
         self.config = Scripts.filereader("config.config")
-        self.rabbitmq_starter()
 
 
     def start_button_clicked(self):
@@ -47,19 +43,3 @@ class MaimWindow(QtWidgets.QMainWindow, ui):
         self.deman = threading.Thread(target=self.setting_window.show())
         self.deman.start()
 
-    def rabbitmq_starter(self):
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.config["rabbimq_main_server"]))
-        channel = connection.channel()
-        try:
-            # Отправка тестового сообщения на очередь
-            channel.queue_declare(queue='test')
-            channel.basic_publish(exchange='', routing_key='test', body='Test message')
-            if self.config["developer_mode"]=="True":
-                webbrowser.open('http://'+self.config["rabbimq_main_server"]+':15672')
-            logging.info("Сервер RabbitMQ работает и доступен")
-        except pika.exceptions.AMQPConnectionError:
-            os.chdir("C:\\Program Files\\RabbitMQ Server\\rabbitmq_server-3.12.2\\sbin")
-            os.system('rabbitmq-server start')
-            if self.config["developer_mode"] == "True":
-                webbrowser.open('http://'+self.config["rabbimq_main_server"]+':15672')
-            logging.info("Сервер RabbitMQ запущен")

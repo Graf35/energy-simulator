@@ -1,6 +1,5 @@
 import asyncio
 import threading
-import pika
 from equipment.steam_bollerE5039440gm5.steam_boiler_E5039440gm5 import Steam_boiler
 from time import sleep
 import Scripts

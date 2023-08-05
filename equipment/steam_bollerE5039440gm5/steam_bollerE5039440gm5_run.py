@@ -21,7 +21,7 @@ class Steam_bollerE5039440gm5():
         self.server_socket.listen()
         # Принимаем входящее соединение от клиента
         # self.client_socket, client_address = self.server_socket.accept()
-        logging.info("Соединение установлено с клиентом: "+ str(client_address))
+        logging.info("Соединение установлено с клиентом: "+ str(self.client_address))
         self.bolier = Steam_boiler(mode)
         listening_deman = threading.Thread(target=self.anser_data, daemon=True)
         listening_deman.start()

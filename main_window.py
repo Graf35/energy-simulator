@@ -25,7 +25,7 @@ class MaimWindow(QtWidgets.QMainWindow, ui):
 
 
     def start_button_clicked(self):
-        try:
+        # try:
             if self.type_equipment.currentText() == 'E-50-440-3,9ГМ':
                 if self.equipment_mode.currentText()=='':
                     logging.warning("Не выбран сценарий запуска оборудования")
@@ -33,8 +33,8 @@ class MaimWindow(QtWidgets.QMainWindow, ui):
                 logging.info("Запущено оборудование: котёл Е-50-3,9-440ГМ")
             else:
                 logging.warning("Не выбран тип оборудования")
-        except:
-            logging.error("Ошибка запуска оборудования "+str(self.type_equipment.currentText()))
+        # except:
+        #     logging.error("Ошибка запуска оборудования "+str(self.type_equipment.currentText()))
 
     async def start_steam_bollerE5039440gm5(self):
         self.window= steam_bollerE5039440gm5_run.Steam_bollerE5039440gm5(self.equipment_mode.currentText())

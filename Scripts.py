@@ -7,7 +7,7 @@ def Tab(Tab, anser, value, required):
     #Задаём номер строки
     line=None
     #Читаем файл таблицы
-    article_read = read_csv(Tab, ";")
+    article_read = read_csv(Tab, sep=";")
     #Перебераем все значения известной переменной
     for i in range(len(article_read[anser])):
         #Если значение найдено сохраняем номер строки

@@ -1,18 +1,24 @@
 from flask import Flask, jsonify, render_template, request
 import webbrowser
-import pika
 import threading
 import Scripts
 import logging
 from Log import Deman_log
+import socket
+import time
+from pathlib import Path
+
 
 logger = Deman_log()
-config = Scripts.filereader("../../../config.config")
-connection = pika.BlockingConnection(pika.ConnectionParameters(host=config["rabbimq_main_screen"]))
-channel = connection.channel()
-channel.queue_declare(queue='data_queue')
+config = Scripts.filereader(Path(Path.cwd(), '../../../config.config'))
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client_socket.connect((config["steam_and_water_screen"], int(config["steam_and_water_screen_port"])))
 
 app = Flask(__name__)
+
+
+def send_data(data):
+    client_socket.send(data.encode())
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -158,29 +164,54 @@ def update_K5L1_4():
     text = str(K5L1_4)
     return jsonify(K5L1_4=text)
 
-def process_data(data):
-    variable, value = data.split()
-    globals()[variable] = value
+def connect_to_server():
+    server_address = (config["main_server"], int(config["main_server_port"]))
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect(server_address)
+    return client_socket
 
+def reconnect():
+    while True:
+        try:
+            client_socket = connect_to_server()
+            logging.info("Соединение востановлено")
+            # Если успешно переподключился
+            break
+        except socket.error:
+            # Если произошла ошибка при переподключении
+            logging.error("Ошибка при переподключении. Повторная попытка через 5 секунд...")
+            time.sleep(5)
 
-# Callback-функция для обработки полученных сообщений
-def callback(ch, method, properties, body):
-    process_data(body.decode())
+def listening_data():
+    while True:
+        data=client_socket.recv(1024).decode()
+        lines=data.split('/n')
+        for line in lines:
+            if len(line.split())==2:
+                variable, value = line.split()
+                globals()[variable] = value
+            else:
+                continue
 
+def chek_connect():
+    client_socket = connect_to_server()
 
-def listening_queue():
-    channel.basic_consume(queue='data_queue', on_message_callback=callback, auto_ack=True)
-    channel.start_consuming()
+    while True:
+        try:
+            data = client_socket.recv(1024)
+            # Обработка полученных данных
+        except socket.error:
+            logging.error("Потеря соединения. Переподключение...")
+            client_socket.close()
+            reconnect()
 
-
-def send_data(data):
-    # Отправка данных в RabbitMQ
-    channel.basic_publish(exchange='', routing_key='boiler_data', body=str(data))
 
 
 if __name__ == '__main__':
     webbrowser.open('http://127.0.0.1:5000')
     # Привязка callback-функции к очереди сообщений
-    listening_deman = threading.Thread(target=listening_queue, daemon=True)
+    listening_deman = threading.Thread(target=listening_data, daemon=True)
     listening_deman.start()
+    chek_deman = threading.Thread(target=chek_connect, daemon=True)
+    chek_deman.start()
     app.run()

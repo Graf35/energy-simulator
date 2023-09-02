@@ -31,10 +31,10 @@ class Steam_bollerE5039440gm5():
 
     def run_boler(self):
         while True:
-            self.client_socket, addr = self.server_socket.accept()
-            logging.info(f"Accepted connection from {addr[0]}:{addr[1]}")
-            client_thread = threading.Thread(target=self.handle_client, args=(self.client_socket,))
-            client_thread.start()
+            # self.client_socket, addr = self.server_socket.accept()
+            # logging.info(f"Accepted connection from {addr[0]}:{addr[1]}")
+            # client_thread = threading.Thread(target=self.handle_client, args=(self.client_socket,))
+            # client_thread.start()
             self.bolier.K5LCV1 = self.bolier.KK5LCV1.adjustment()
             self.data_append("K5LCV1 " + str(round(self.bolier.K5LCV1, 2)))
             self.bolier.K5LCV1_1=self.bolier.KK5LCV1_1.adjustment()

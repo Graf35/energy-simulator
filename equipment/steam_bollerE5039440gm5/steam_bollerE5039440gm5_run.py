@@ -16,7 +16,10 @@ class Steam_bollerE5039440gm5():
         self.data=''
         # Создаем TCP-сокет и привязываем его к IP-адресу и порту сервера
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server_socket.bind((self.config["main_server"], int(self.config["main_server_port"])))
+        try:
+            self.server_socket.bind((self.config["main_server"], int(self.config["main_server_port"])))
+        except OSError:
+            logging.warning("Требуемый адрес для своего контекста неверен")
         # Слушаем входящие соединения
         self.server_socket.listen()
         # Принимаем входящее соединение от клиента
@@ -107,17 +110,23 @@ class Steam_bollerE5039440gm5():
         self.data+=data+"/n"
 
     def send_data(self):
-        self.client_socket.send(self.data.encode())
+        try:
+            self.client_socket.send(self.data.encode())
+        except ConnectionResetError:
+            logging.warning("Разрыв соединения клиентом")
         self.data=''
 
     def anser_data(self):
         while True:
             # Получаем данные от клиента
-            data = self.client_socket.recv(1024).decode()
+            try:
+                data = self.client_socket.recv(1024).decode()
+            except ConnectionResetError:
+                logging.warning("Разрыв соединения клиентом")
+                break
             if not data:
                 break
             variable, value = data.split()
-            print(variable)
             if variable=="K5LCV1":
                 self.bolier.KK5LCV1.adjustment(float(value))
             elif variable=="K5LCV1_1":
@@ -133,4 +142,4 @@ class Steam_bollerE5039440gm5():
         self.client_socket.close()
 
     async def screen_start(self):
-        os.system('python equipment/steam_bollerE5039440gm5/screen/steam_and_water.py')
+        os.system('python equipment/steam_bollerE5039440gm5/screen/screen_server.py')

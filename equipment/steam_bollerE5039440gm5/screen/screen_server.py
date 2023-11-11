@@ -21,8 +21,8 @@ def send_data(data):
     client_socket.send(data.encode())
 
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
+@app.route('/steam_and_water', methods=['GET', 'POST'])
+def steam_and_water():
     #TODO Оператор Выбора
     if request.method == 'POST':
         K5LCV1_ans = request.form.get('K5LCV1_ans')
@@ -35,6 +35,21 @@ def index():
         if str(K5TCV2_ans) != "None":
             send_data("K5TCV2 " + str(K5TCV2_ans))
     return render_template('steam_and_water.html')
+
+@app.route('/burner_management', methods=['GET', 'POST'])
+def burner_management():
+    #TODO Оператор Выбора
+    if request.method == 'POST':
+        K5LCV1_ans = request.form.get('K5LCV1_ans')
+        if str(K5LCV1_ans) != "None":
+            send_data("K5LCV1 " + str(K5LCV1_ans))
+        K5LCV1_1_ans = request.form.get('K5LCV1_1_ans')
+        if str(K5LCV1_1_ans) != "None":
+            send_data("K5LCV1_1 " + str(K5LCV1_1_ans))
+        K5TCV2_ans = request.form.get('K5TCV2_ans')
+        if str(K5TCV2_ans) != "None":
+            send_data("K5TCV2 " + str(K5TCV2_ans))
+    return render_template('burner_management.html')
 
 
 @app.route('/K5LCV1')
@@ -208,7 +223,8 @@ def chek_connect():
 
 
 if __name__ == '__main__':
-    webbrowser.open('http://127.0.0.1:5000')
+    webbrowser.open('http://127.0.0.1:5000/steam_and_water')
+    webbrowser.open('http://127.0.0.1:5000/burner_management')
     # Привязка callback-функции к очереди сообщений
     listening_deman = threading.Thread(target=listening_data, daemon=True)
     listening_deman.start()

@@ -40,15 +40,9 @@ def steam_and_water():
 def burner_management():
     #TODO Оператор Выбора
     if request.method == 'POST':
-        K5LCV1_ans = request.form.get('K5LCV1_ans')
-        if str(K5LCV1_ans) != "None":
-            send_data("K5LCV1 " + str(K5LCV1_ans))
-        K5LCV1_1_ans = request.form.get('K5LCV1_1_ans')
-        if str(K5LCV1_1_ans) != "None":
-            send_data("K5LCV1_1 " + str(K5LCV1_1_ans))
-        K5TCV2_ans = request.form.get('K5TCV2_ans')
-        if str(K5TCV2_ans) != "None":
-            send_data("K5TCV2 " + str(K5TCV2_ans))
+        K5PCV4_ans = request.form.get('K5PCV4_ans')
+        if str(K5PCV4_ans) != "None":
+            send_data("K5PCV4 " + str(K5PCV4_ans))
     return render_template('burner_management.html')
 
 
@@ -199,6 +193,11 @@ def update_K5F3():
     text = str(K5F3)
     return jsonify(K5F3=text)
 
+@app.route('/K5PCV4')
+def update_K5PCV4():
+    text = str(K5PCV4)
+    return jsonify(K5PCV4=text)
+
 def connect_to_server():
     server_address = (config["main_server"], int(config["main_server_port"]))
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -227,6 +226,7 @@ def listening_data():
                 globals()[variable] = value
             else:
                 continue
+
 
 def chek_connect():
     client_socket = connect_to_server()

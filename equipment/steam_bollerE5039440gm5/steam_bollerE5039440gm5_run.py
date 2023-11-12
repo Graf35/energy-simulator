@@ -96,6 +96,7 @@ class Steam_bollerE5039440gm5():
             self.data_append("K5L1_3 " + str(round(self.bolier.K5L1_3, 2)))
             self.data_append("K5L1_4 " + str(round(self.bolier.K5L1_4, 2)))
             self.bolier.K5PCV4=self.bolier.KK5PCV4.adjustment()
+            self.data_append("K5PCV4 " + str(round(self.bolier.K5PCV4, 2)))
             self.bolier.change_K5F3()
             self.data_append("K5F3 " + str(round(self.bolier.K5F3, 2)))
             self.bolier.change_K5F6x()
@@ -137,6 +138,9 @@ class Steam_bollerE5039440gm5():
                 self.bolier.KK5LCV1_1.adjustment(float(value))
             elif variable=="K5TCV2":
                 self.bolier.KK5TCV2.adjustment(float(value))
+            elif variable=="K5PCV4":
+                self.bolier.KK5PCV4.adjustment(float(value))
+
 
     def handle_client(self, client_socket):
         # обработка входящего соединения

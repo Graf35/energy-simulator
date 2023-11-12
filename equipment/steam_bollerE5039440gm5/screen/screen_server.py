@@ -184,6 +184,11 @@ def update_K0P125():
     text = str(K0P125)
     return jsonify(K0P125=text)
 
+@app.route('/K5T20')
+def update_K5T20():
+    text = str(K5T20)
+    return jsonify(K5T20=text)
+
 def connect_to_server():
     server_address = (config["main_server"], int(config["main_server_port"]))
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

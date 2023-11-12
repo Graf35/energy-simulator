@@ -34,10 +34,6 @@ class Steam_bollerE5039440gm5():
 
     def run_boler(self):
         while True:
-            # self.client_socket, addr = self.server_socket.accept()
-            # logging.info(f"Accepted connection from {addr[0]}:{addr[1]}")
-            # client_thread = threading.Thread(target=self.handle_client, args=(self.client_socket,))
-            # client_thread.start()
             self.bolier.K5LCV1 = self.bolier.KK5LCV1.adjustment()
             self.data_append("K5LCV1 " + str(round(self.bolier.K5LCV1, 2)))
             self.bolier.K5LCV1_1=self.bolier.KK5LCV1_1.adjustment()
@@ -88,6 +84,8 @@ class Steam_bollerE5039440gm5():
             self.data_append("K5P5_1 " + str(round(self.bolier.K5P5_1, 2)))
             self.bolier.change_K5Q3()
             self.data_append("K5Q3 " + str(round(self.bolier.K5Q3, 2)))
+            self.bolier.change_K0P125()
+            self.data_append("K0P125 " + str(round(self.bolier.K0P125, 2)))
             self.drum_lavel()
             self.data_append("K5L1_1 " + str(round(self.bolier.K5L1_1, 2)))
             self.data_append("K5L1_2 " + str(round(self.bolier.K5L1_2, 2)))

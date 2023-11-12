@@ -19,7 +19,7 @@
 
         #K0P125 {
                     position: absolute;
-                    left: 65px;
+                    left: 60px;
                     top:315px;
                   }
 </style>
@@ -30,8 +30,14 @@
               url: '/K0P125',
               dataType: 'json', // Предполагаем, что данные ответа в формате JSON
               success: function(data) {
-              $('#K5LCV1').text(data.K5LCV1);
+              $('#K0P125').text(data.K0P125);
               }
+            });
+                setTimeout(updateValues, 1000);
+            }
+
+            $(document).ready(function() {
+                updateValues();
             });
     </script>
 <body>

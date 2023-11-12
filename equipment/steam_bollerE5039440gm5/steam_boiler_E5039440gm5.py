@@ -126,7 +126,7 @@ class Steam_boiler():
         K5HCV53 = False
         self.K5F3 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5F3", mode))
         self.K5T20 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5T20", mode))
-        self.K5P110 = 63
+        self.K5P110 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P110", mode))
         self.K5PCV4 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV4", mode))
         K5PCV4_task = 0
         K5PCV4_apass = False
@@ -202,6 +202,7 @@ class Steam_boiler():
         self.K5L1_4_excitement=0
         self.K0P125_excitement=0
         self.K5T20_excitement = 0
+        self.K5P110_excitement = 0
 
     def change_K5T4(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T4.sav'), 'rb'))
@@ -634,6 +635,12 @@ class Steam_boiler():
         table_entrance = pd.DataFrame(data=entrance)
         quadratic = PolynomialFeatures(degree=2)
         self.K5T20= float(model.predict(quadratic.fit_transform(table_entrance))[0][0])+self.K5T20_excitement
+
+    def change_K5P110(self):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5P110.sav'), 'rb'))
+        entrance = {'K0P125.PV':[self.K0P125]}
+        table_entrance = pd.DataFrame(data=entrance)
+        self.K5P110= float(model.predict(table_entrance)[0][0])+self.K5P110_excitement
 
 
 

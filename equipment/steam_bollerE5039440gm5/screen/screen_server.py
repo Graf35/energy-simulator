@@ -189,6 +189,11 @@ def update_K5T20():
     text = str(K5T20)
     return jsonify(K5T20=text)
 
+@app.route('/K5P110')
+def update_K5P110():
+    text = str(K5P110)
+    return jsonify(K5P110=text)
+
 def connect_to_server():
     server_address = (config["main_server"], int(config["main_server_port"]))
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

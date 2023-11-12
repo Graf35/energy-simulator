@@ -27,6 +27,11 @@
                         left: 185px;
                         top:315px;
                       }
+        #K5P110 {
+                        position: absolute;
+                        left: 310px;
+                        top:315px;
+                      }
 </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -47,6 +52,14 @@
               }
             });
 
+            $.ajax({
+              url: '/K5P110',
+              dataType: 'json', // Предполагаем, что данные ответа в формате JSON
+              success: function(data) {
+              $('#K5P110').text(data.K5P110);
+              }
+            });
+
                 setTimeout(updateValues, 1000);
             }
 
@@ -59,5 +72,6 @@
 <script type="text/javascript" src="https://app.diagrams.net/js/viewer-static.min.js"></script>
 <p id="K0P125">0</p>
 <p id="K5T20">0</p>
+<p id="K5P110">0</p>
 </body>
 </html>

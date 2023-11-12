@@ -97,7 +97,9 @@ class Steam_bollerE5039440gm5():
             self.data_append("K5L1_4 " + str(round(self.bolier.K5L1_4, 2)))
             self.bolier.K5PCV4=self.bolier.KK5PCV4.adjustment()
             self.bolier.change_K5F3()
+            self.data_append("K5F3 " + str(round(self.bolier.K5F3, 2)))
             self.bolier.change_K5F6x()
+            self.data_append("K5F6x " + str(round(self.bolier.K5F6x, 2)))
             self.send_data()
             sleep(2)
 

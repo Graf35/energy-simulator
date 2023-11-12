@@ -32,6 +32,11 @@
                         left: 310px;
                         top:315px;
                       }
+        #K5F3 {
+                        position: absolute;
+                        left: 300px;
+                        top:380px;
+                      }
 </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -60,6 +65,14 @@
               }
             });
 
+            $.ajax({
+              url: '/K5F3',
+              dataType: 'json', // Предполагаем, что данные ответа в формате JSON
+              success: function(data) {
+              $('#K5F3').text(data.K5F3);
+              }
+            });
+
                 setTimeout(updateValues, 1000);
             }
 
@@ -73,5 +86,6 @@
 <p id="K0P125">0</p>
 <p id="K5T20">0</p>
 <p id="K5P110">0</p>
+<p id="K5F3">0</p>
 </body>
 </html>

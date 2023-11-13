@@ -45,6 +45,10 @@ def burner_management():
             send_data("K5PCV4 " + str(K5PCV4_ans))
     return render_template('burner_management.html')
 
+@app.route('/сascade_air_heater', methods=['GET', 'POST'])
+def сascade_air_heater():
+    return render_template('сascade_air_heater.html')
+
 
 @app.route('/K5LCV1')
 def update_K5LCV1():
@@ -245,6 +249,7 @@ def chek_connect():
 if __name__ == '__main__':
     webbrowser.open('http://127.0.0.1:5000/steam_and_water')
     webbrowser.open('http://127.0.0.1:5000/burner_management')
+    webbrowser.open('http://127.0.0.1:5000/сascade_air_heater')
     # Привязка callback-функции к очереди сообщений
     listening_deman = threading.Thread(target=listening_data, daemon=True)
     listening_deman.start()

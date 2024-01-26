@@ -27,6 +27,11 @@
                     left: 520px;
                     top:257px;
                   }
+        #K5P4_2 {
+                    position: absolute;
+                    left: 520px;
+                    top:327px;
+                  }
         #K5T20 {
                         position: absolute;
                         left: 185px;
@@ -89,6 +94,14 @@
             });
 
             $.ajax({
+              url: '/K5P4_2',
+              dataType: 'json', // Предполагаем, что данные ответа в формате JSON
+              success: function(data) {
+              $('#K5P4_2').text(data.K5P4_2);
+              }
+            });
+
+            $.ajax({
               url: '/K5F3',
               dataType: 'json', // Предполагаем, что данные ответа в формате JSON
               success: function(data) {
@@ -120,6 +133,7 @@
 <p id="K5T20">0</p>
 <p id="K5P110">0</p>
 <p id="K5P4_1">0</p>
+<p id="K5P4_2">0</p>
 <p id="K5F3">0</p>
 <p id="K5PCV4">0</p>
 

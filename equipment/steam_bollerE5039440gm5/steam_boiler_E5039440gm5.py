@@ -118,7 +118,7 @@ class Steam_boiler():
         K5FCV4_2_control = "M"
         self.K5Q2_1 = 0
         self.K5Q2_2 = 0
-        self.K5P4_1 = 0
+        self.K5P4_1 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P4_1", mode))
         K5P4_1_select = True
         self.K5P4_2 = 0
         K5P4_2_select = True
@@ -200,6 +200,7 @@ class Steam_boiler():
         self.K0P125_excitement=0
         self.K5T20_excitement = 0
         self.K5P110_excitement = 0
+        self.K5P4_1_excitement = 0
 
     def change_K5T4(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T4.sav'), 'rb'))
@@ -638,6 +639,12 @@ class Steam_boiler():
         entrance = {'K0P125.PV':[self.K0P125]}
         table_entrance = pd.DataFrame(data=entrance)
         self.K5P110= float(model.predict(table_entrance)[0][0])+self.K5P110_excitement
+
+    def change_K5P4_1(self):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5P4_1.sav'), 'rb'))
+        entrance = {'K0P125.PV':[self.K0P125], 'K5PCV4I.PV': [self.K5PCV4]}
+        table_entrance = pd.DataFrame(data=entrance)
+        self.K5P4_1= float(model.predict(table_entrance)[0][0])+self.K5P4_1_excitement
 
 
 

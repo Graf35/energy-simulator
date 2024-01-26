@@ -90,6 +90,8 @@ class Steam_bollerE5039440gm5():
             self.data_append("K5T20 " + str(round(self.bolier.K5T20, 2)))
             self.bolier.change_K5P110()
             self.data_append("K5P110 " + str(round(self.bolier.K5P110, 2)))
+            self.bolier.change_K5P4_1()
+            self.data_append("K5P4_1 " + str(round(self.bolier.K5P4_1, 2)))
             self.drum_lavel()
             self.data_append("K5L1_1 " + str(round(self.bolier.K5L1_1, 2)))
             self.data_append("K5L1_2 " + str(round(self.bolier.K5L1_2, 2)))

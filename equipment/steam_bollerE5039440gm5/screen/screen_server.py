@@ -201,6 +201,16 @@ def update_K5P4_1():
     text = str(K5P4_1)
     return jsonify(K5P4_1=text)
 
+@app.route('/K5P17_1')
+def update_K5P17_1():
+    text = str(K5P17_1)
+    return jsonify(K5P17_1=text)
+
+@app.route('/K5P17_2')
+def update_K5P17_2():
+    text = str(K5P17_2)
+    return jsonify(K5P17_2=text)
+
 @app.route('/K5P4_2')
 def update_K5P4_2():
     text = str(K5P4_2)

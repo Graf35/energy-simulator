@@ -135,7 +135,7 @@ class Steam_boiler():
         K5P6_1_select = True
         self.K5P6_2 = 0
         K5P6_2_select = False
-        self.K0P125 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV4", mode))
+        self.K0P125 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K0P125", mode))
         K5HCV27_1 = True
         K5HCV26_1 = True
         K5HCV27_2 = True
@@ -144,12 +144,12 @@ class Steam_boiler():
         K5V51_1 = False
         self.K5PCV17_1 = 0
         K5PCV17_1_task = 0
-        self.K5P17_1 = 0
+        self.K5P17_1 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P17_1", mode))
         K5HCV50_2 = False
         K5V51_2 = False
         K5PCV17_2 = 0
         K5PCV17_2_task = 0
-        self.K5P17_2 = 0
+        self.K5P17_2 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5P17_2", mode))
         K5HCV50 = False
         K5HCV51 = False
         igniter_1 = False
@@ -201,6 +201,8 @@ class Steam_boiler():
         self.K5T20_excitement = 0
         self.K5P110_excitement = 0
         self.K5P4_1_excitement = 0
+        self.K5P17_1_excitement = 0
+        self.K5P17_2_excitement = 0
 
     def change_K5T4(self):
         model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5T4.sav'), 'rb'))
@@ -646,6 +648,17 @@ class Steam_boiler():
         table_entrance = pd.DataFrame(data=entrance)
         self.K5P4_1= float(model.predict(table_entrance)[0][0])+self.K5P4_1_excitement
 
+    def change_K5P17_1(self):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5P17_1.sav'), 'rb'))
+        entrance = {'K5P4_1.PV':[self.K5P4_1]}
+        table_entrance = pd.DataFrame(data=entrance)
+        self.K5P17_1= float(model.predict(table_entrance)[0][0])+self.K5P17_1_excitement
+
+    def change_K5P17_2(self):
+        model = pickle.load(open(Path(Path.cwd(), 'models', "model", 'K5P17_2.sav'), 'rb'))
+        entrance = {'K5P4_1.PV':[self.K5P4_1]}
+        table_entrance = pd.DataFrame(data=entrance)
+        self.K5P17_2= float(model.predict(table_entrance)[0][0])+self.K5P17_2_excitement
 
 
 

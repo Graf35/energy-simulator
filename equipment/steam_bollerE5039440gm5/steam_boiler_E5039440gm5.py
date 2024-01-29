@@ -130,7 +130,6 @@ class Steam_boiler():
         self.K5PCV4 = float(Scripts.Tab(Path(Path.cwd(), 'database', 'mode.csv'), "объект", "K5PCV4", mode))
         K5P23 = 0
         K5P24 = 0
-        self.K5Q3 = 0
         self.K5P6_1 = 0
         K5P6_1_select = True
         self.K5P6_2 = 0

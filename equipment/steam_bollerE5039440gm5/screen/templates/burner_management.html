@@ -32,6 +32,16 @@
                     left: 520px;
                     top:327px;
                   }
+        #K5P5_1 {
+                    position: absolute;
+                    left: 1268px;
+                    top:723px;
+                  }
+        #K5P5_2 {
+                    position: absolute;
+                    left: 1768px;
+                    top:723px;
+                  }
         #K5P17_1 {
                     position: absolute;
                     left: 783px;
@@ -110,6 +120,23 @@
               $('#K5P4_2').text(data.K5P4_2);
               }
             });
+
+            $.ajax({
+              url: '/K5P5_1',
+              dataType: 'json', // Предполагаем, что данные ответа в формате JSON
+              success: function(data) {
+              $('#K5P5_1').text(data.K5P5_1);
+              }
+            });
+
+            $.ajax({
+              url: '/K5P5_2',
+              dataType: 'json', // Предполагаем, что данные ответа в формате JSON
+              success: function(data) {
+              $('#K5P5_2').text(data.K5P5_2);
+              }
+            });
+
             $.ajax({
               url: '/K5P17_1',
               dataType: 'json', // Предполагаем, что данные ответа в формате JSON
@@ -160,6 +187,8 @@
 <p id="K5P17_1">0</p>
 <p id="K5P17_2">0</p>
 <p id="K5P4_2">0</p>
+<p id="K5P5_1">0</p>
+<p id="K5P5_2">0</p>
 <p id="K5F3">0</p>
 <p id="K5PCV4">0</p>
 
